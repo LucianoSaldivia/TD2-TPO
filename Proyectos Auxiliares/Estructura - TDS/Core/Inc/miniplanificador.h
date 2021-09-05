@@ -1,5 +1,6 @@
 #ifndef MICROPLANIFICADOR_H_
 #define MICROPLANIFICADOR_H_
+
 #include <stdint.h>
 typedef struct
 {

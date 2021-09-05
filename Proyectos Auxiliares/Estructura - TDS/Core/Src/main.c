@@ -18,12 +18,12 @@
   */
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
+#include <timer_scheduler.h>
 #include "main.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-#include "miniplanificador.h"
-#include "timer_monitor.h"
+#include "scheduler.h"
 #include "arrebote.h"
 #include "dwt.h"
 #include "sha3.h"
@@ -36,7 +36,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define TICKS_SISTEMA			(2)
+#define CICLO_SECUNDARIO_MS		(2)
 #define LEN_TASK_LIST			(8)
 #define PULSADOR_ACTIVO_BAJO	(1)
 #define PULSADOR_TICS			(20)
@@ -57,14 +57,17 @@
 UART_HandleTypeDef huart1;
 
 /* USER CODE BEGIN PV */
-	uint32_t conteo_ticks_tds;
+	Scheduler scheduler;
+
+	uint32_t ms_counter;
 	uint32_t enviar_serie;
 	uint32_t serie_disponible;
 	uint8_t buffer_serie[LEN_BUFFER_SERIE];
 	uint8_t* hash;
-	TaskStat lista_tareas[LEN_TASK_LIST];
 	arrebote pulsador;
 	sha3_context c;
+
+	uint8_t useless_var;
 
 
 /* USER CODE END PV */
@@ -79,93 +82,15 @@ static void MX_USART1_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void falla_sistema(void)
-{
-	/*Si una tarea se pasa de ticks se hace fallar al sistema*/
-	__disable_irq();
-	while (1)
-	{
-		for (uint32_t i = 0; i < 100000; i++);
-		HAL_GPIO_TogglePin(LED_PLACA_PUERTO, LED_PLACA_PIN);
-	}
-}
+typedef struct dummy_parameters {
+	uint8_t a;
+	uint8_t b;
+} dummy_parameters;
+void tarea_dummy( dummy_parameters *param ){
 
-uint32_t xorshift32(void)
-{
-	static uint32_t x = 5761455;
-	x ^= x << 13;
-	x ^= x >> 17;
-	x ^= x << 5;
-	return x;
-}
+	useless_var = (param->a*param->b) + (param->a-param->b)*param->b - 4*param->a;
+	useless_var *= (3 / 17);
 
-void tarea_calculo(void *p)
-{
-	uint32_t clave;
-	chequear_arrebote(&pulsador, HAL_GPIO_ReadPin(PULSADOR_PUERTO, PULSADOR_PIN));
-	if(hay_flanco_arrebote(&pulsador) && serie_disponible)
-	{
-		clave = xorshift32();
-		sha3_Init512(&c);
-		sha3_Update(&c, &clave, sizeof(clave));
-		hash = (uint8_t*)sha3_Finalize(&c);
-		enviar_serie = 1;
-	}
-}
-
-char bin2hex(uint8_t valor, uint32_t nibble)
-{
-	if(nibble) valor>>=4;
-	valor&=0x0F;
-	valor+='0';
-	if(valor>'9') valor+=7;
-	return valor;
-}
-
-void tarea_serie(void *p)
-{
-	int i;
-	static uint32_t estado = 0;
-	if(enviar_serie && estado==0)
-	{
-		enviar_serie = 0;
-		serie_disponible = 0;
-		for(i=0; i<64; i++)
-		{
-			buffer_serie[i*2+0]=bin2hex(hash[i], 1);
-			buffer_serie[i*2+1]=bin2hex(hash[i], 0);
-		}
-		buffer_serie[64]='\r';
-		buffer_serie[65]='\n';
-		buffer_serie[66]=0;
-		huart1.Instance->DR = buffer_serie[0];
-		estado++;
-	}
-	else if(estado>0 && estado<66)
-	{
-		if( huart1.Instance->SR&UART_FLAG_TXE)
-		{
-			huart1.Instance->DR = buffer_serie[estado++];
-		}
-	}
-	else if(estado == 66)
-	{
-		if(huart1.Instance->SR&UART_FLAG_TXE)
-		{
-			estado = 0;
-			serie_disponible = 1;
-		}
-	}
-}
-
-void tarea_led(void *p)
-{
-	static uint32_t tics = LED_TICKS;
-	if(!--tics)
-	{
-		tics = LED_TICKS;
-		HAL_GPIO_TogglePin(LED_PLACA_PUERTO, LED_PLACA_PIN);
-	}
 }
 /* USER CODE END 0 */
 
@@ -177,7 +102,11 @@ int main(void)
 {
   /* USER CODE BEGIN 1 */
 	uint32_t ticks = 0;
-  /* USER CODE END 1 */
+	dummy_parameters dummy_params;
+
+	dummy_params.a = 4;
+	dummy_params.b = 5;
+	/* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
 
@@ -199,15 +128,16 @@ int main(void)
   MX_GPIO_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  inic_timer(1);
-  inicializar_despachador(lista_tareas, LEN_TASK_LIST, start_timer, stop_timer, falla_sistema);
+  initScheduler( &scheduler, LEN_TASK_LIST);
   inicializar_arrebote(&pulsador, PULSADOR_ACTIVO_BAJO, PULSADOR_TICS);
-  agregar_tarea(lista_tareas, tarea_calculo, NULL, 0, 1, 0, 60000);
-  agregar_tarea(lista_tareas, tarea_serie,   NULL, 0, 1, 0, 60000);
-  agregar_tarea(lista_tareas, tarea_led,     NULL, 0, 3, 0, 60000);
-  enviar_serie = 0;
-  serie_disponible = 1;
-  conteo_ticks_tds = HAL_GetTick();
+  scheduler.addTask( &scheduler, tarea_dummy, (void *) &dummy_params, 0, 1, 0, _DEFAULT_SCHEDULER_WCET_ );
+  /*
+  scheduler->addTask( &scheduler, tarea_a, (void *) &a_task_params,  50, 2, 0, _DEFAULT_SCHEDULER_WCET_ );
+  scheduler->addTask( &scheduler, tarea_b, (void *) &b_task_params, 120, 3, 0, _DEFAULT_SCHEDULER_WCET_ );
+  scheduler->addTask( &scheduler, tarea_c, (void *) &c_task_params, 310, 1, 0, _DEFAULT_SCHEDULER_WCET_ );
+  */
+
+  ms_counter = HAL_GetTick();
   dwt_inic();
   /* USER CODE END 2 */
 
@@ -219,13 +149,11 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 	  dwt_reset();
-	  if((HAL_GetTick()-conteo_ticks_tds)>=TICKS_SISTEMA)
-	  {
-		  conteo_ticks_tds = HAL_GetTick();
-		  despachar_tareas();
+	  if( (HAL_GetTick()-ms_counter) >= CICLO_SECUNDARIO_MS ){
+		  ms_counter = HAL_GetTick();
+		  scheduler.run( &scheduler );
 	  }
-	  if(dwt_read()>ticks)
-	  {
+	  if( dwt_read() > ticks ){
 		  ticks = dwt_read();
 	  }
   }

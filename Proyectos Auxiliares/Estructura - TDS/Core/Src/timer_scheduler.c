@@ -1,6 +1,6 @@
-#include "stm32f1xx_hal.h"
-#include <stdint.h>
-void inic_timer(uint32_t divisor_us)
+#include <timer_scheduler.h>
+
+void initSchedulerTimer(uint32_t divisor_us)
 {
 	/*
 	 * Uso el timer 2 para el monitor del sistema.
@@ -16,13 +16,13 @@ void inic_timer(uint32_t divisor_us)
 	TIM2->CR1 &= ~TIM_CR1_CEN;
 }
 
-void start_timer(void)
+void startSchedulerTimer(void)
 {
 	TIM2->CNT = 0;
 	TIM2->CR1 |= TIM_CR1_CEN;
 }
 
-uint32_t stop_timer(void)
+uint32_t stopSchedulerTimer(void)
 {
 	uint32_t ret = TIM2->CNT;
 	TIM2->CR1 &= ~TIM_CR1_CEN;

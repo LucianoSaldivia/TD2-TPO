@@ -18,8 +18,7 @@ static TaskStat *lista_tareas;
 
 void inicializar_despachador(TaskStat *lista, uint32_t len,
 		void (*start_timer)(void), uint32_t (*stop_timer)(void),
-		void (*falla_sistema)(void))
-{
+		void (*falla_sistema)(void)) {
 	uint32_t i;
 	monitor_start = start_timer;
 	monitor_stop = stop_timer;
@@ -32,11 +31,9 @@ void inicializar_despachador(TaskStat *lista, uint32_t len,
 }
 
 int agregar_tarea(TaskStat *lista, void (*tarea)(void *p), void *param,
-		int offset, int periodo, int bcet, int wcet)
-{
+		int offset, int periodo, int bcet, int wcet){
 	// Chequeos
-	if ((periodo == 0) || (tarea == NULL)
-			|| tareas_a_despachar == max_len_lista_tareas)
+	if ( periodo == 0 || tarea == NULL || tareas_a_despachar == max_len_lista_tareas )
 		return -1;
 
 	//Punteros de la tarea.
@@ -55,43 +52,36 @@ int agregar_tarea(TaskStat *lista, void (*tarea)(void *p), void *param,
 	return 0;
 }
 
-int despachar_tarea(TaskStat *estado)
-{
+int despachar_tarea(TaskStat *estado){
 	int ret = 0;
 	int valor_us;
-	if (!estado->offset)
-	{
+	if( !estado->offset ){
 		estado->offset = estado->period - 1;
 		monitor_start();
 		estado->task(estado->param);
 		valor_us = monitor_stop();
 		estado->et = valor_us;
-		if (valor_us < estado->bcet || valor_us > estado->wcet)
+		if( valor_us < estado->bcet || valor_us > estado->wcet )
 			ret--;
-		if (estado->et_wcet < estado->et)
+		if( estado->et_wcet < estado->et )
 			estado->et_wcet = estado->et;
 	}
-	else
-	{
+	else{
 		estado->offset--;
 	}
 	return ret;
 }
 
-void despachar_tareas(void)
-{
+void despachar_tareas(void){
 	uint32_t i;
 	int fallar = 0;
-	for (i = 0; i < tareas_a_despachar; i++)
-	{
+	for( i = 0; i < tareas_a_despachar; i++ ){
 		fallar = despachar_tarea(&lista_tareas[i]);
-		if (fallar)
-		{
+		if( fallar ){
 			break;
 		}
 	}
-	if (fallar)
-	{
+	if( fallar ){
 		fallar_sistema();
 	}
 }

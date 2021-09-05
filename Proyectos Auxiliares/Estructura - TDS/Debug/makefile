@@ -35,34 +35,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := TDS_Original
+BUILD_ARTIFACT_NAME := Estructura - TDS
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-TDS_Original.elf \
+Estructura\ -\ TDS.elf \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-TDS_Original.list \
+Estructura\ -\ TDS.list \
 
 OBJCOPY_BIN += \
-TDS_Original.bin \
+Estructura\ -\ TDS.bin \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: TDS_Original.elf secondary-outputs
+main-build: Estructura\ -\ TDS.elf secondary-outputs
 
 # Tool invocations
-TDS_Original.elf: $(OBJS) $(USER_OBJS) E:\UTN\TD2\ -\ Tecnicas\ Digitales\ 2\TPs\Saldivia\TP4\ -\ TDS\TDS_Original\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "TDS_Original.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\UTN\TD2 - Tecnicas Digitales 2\TPs\Saldivia\TP4 - TDS\TDS_Original\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="TDS_Original.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Estructura\ -\ TDS.elf: $(OBJS) $(USER_OBJS) E:\UTN\TD2\ -\ TPO\Proyectos\ Auxiliares\Estructura\ -\ TDS\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Estructura - TDS.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\UTN\TD2 - TPO\Proyectos Auxiliares\Estructura - TDS\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Estructura - TDS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -71,19 +71,19 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-TDS_Original.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "TDS_Original.list"
+Estructura\ -\ TDS.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Estructura - TDS.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-TDS_Original.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "TDS_Original.bin"
+Estructura\ -\ TDS.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "Estructura - TDS.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(SIZE_OUTPUT)$(OBJDUMP_LIST)$(EXECUTABLES)$(OBJS)$(S_DEPS)$(S_UPPER_DEPS)$(C_DEPS)$(OBJCOPY_BIN) TDS_Original.elf
+	-$(RM) $(SIZE_OUTPUT)$(OBJDUMP_LIST)$(EXECUTABLES)$(OBJS)$(S_DEPS)$(S_UPPER_DEPS)$(C_DEPS)$(OBJCOPY_BIN) "Estructura - TDS.elf"
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_BIN)
