@@ -7,6 +7,7 @@
 
 #include "scheduler.h"
 #include <string.h>
+#include <stdlib.h>
 
 
 void initScheduler(Scheduler *s, uint32_t max_len){
@@ -15,7 +16,11 @@ void initScheduler(Scheduler *s, uint32_t max_len){
 	s->len_tasks_list = 0;
 
 	// Reservo memoria para la lista (array) de Tasks
+	s->tasks_list = (Task *) malloc(max_len*sizeof(Task));
 	memset( s->tasks_list, 0, s->max_len_tasks_list*sizeof(Task) );
+	//int i;
+	//	for (i = 0; i < max_len; i++)
+	//	memset( &(s->tasks_list[i]), 0, sizeof(Task) );
 
 	// Seteo los punteros a función
 	s->addTask = addTask;
@@ -62,12 +67,11 @@ uint8_t runTask(Scheduler *s, uint8_t i_task_to_run){
 	Task *task_to_run = &s->tasks_list[i_task_to_run];
 
 	if( task_to_run->offset_left != 0 ){
+		// Si hay offset
 		startSchedulerTimer();
 		while( task_to_run->offset_left > getSchedulerTimer() );
 		stopSchedulerTimer();
 	}
-
-	task_to_run->periods_left = task_to_run->period - 1;
 
 	// Monitor execution
 	startSchedulerTimer();
@@ -93,17 +97,17 @@ void run(Scheduler *s){
 
 	for( i = 0; i < s->len_tasks_list; i++ ){
 
+		s->tasks_list[i].periods_left --;
+
+		// Si debe ejecutarse en este período
 		if( s->tasks_list[i].periods_left == 0 ){
-			// Debe ejecutarse en este período
-			s->tasks_list[i].periods_left = s->tasks_list[i].period - 1;
+			s->tasks_list[i].periods_left = s->tasks_list[i].period;
 
 			fail = runTask( s, i );
 			if( fail )
 				break;
 
 		}
-		else
-			s->tasks_list[i].periods_left --;
 
 	}
 	if( fail )

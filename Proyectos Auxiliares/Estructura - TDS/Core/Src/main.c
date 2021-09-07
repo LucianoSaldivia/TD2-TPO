@@ -36,15 +36,15 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define CICLO_SECUNDARIO_MS		(2)
-#define LEN_TASK_LIST			(8)
+#define CICLO_SECUNDARIO_MS		(10)
+#define LEN_TASK_LIST			(5)
 #define PULSADOR_ACTIVO_BAJO	(1)
 #define PULSADOR_TICS			(20)
 #define PULSADOR_PUERTO			(GPIOB)
 #define PULSADOR_PIN			(GPIO_PIN_0)
 #define LED_PLACA_PUERTO		(GPIOC)
 #define LED_PLACA_PIN			(GPIO_PIN_13)
-#define LED_TICKS				(43)
+#define LED_TICKS				(50)
 #define LEN_BUFFER_SERIE		(128)
 /* USER CODE END PD */
 
@@ -86,11 +86,23 @@ typedef struct dummy_parameters {
 	uint8_t a;
 	uint8_t b;
 } dummy_parameters;
-void tarea_dummy( dummy_parameters *param ){
+void tarea_dummy(void *parameters){
+	dummy_parameters *p = (dummy_parameters *) parameters;
 
-	useless_var = (param->a*param->b) + (param->a-param->b)*param->b - 4*param->a;
+	useless_var = (p->a*p->b) + (p->a-p->b)*p->b - 4*p->a;
 	useless_var *= (3 / 17);
 
+}
+
+void tarea_led(void *p){
+	static uint32_t tics = LED_TICKS;
+	if( tics == 0 ){
+		tics = LED_TICKS;
+		HAL_GPIO_TogglePin(LED_PLACA_PUERTO, LED_PLACA_PIN);
+	}
+	else {
+		tics --;
+	}
 }
 /* USER CODE END 0 */
 
@@ -130,11 +142,12 @@ int main(void)
   /* USER CODE BEGIN 2 */
   initScheduler( &scheduler, LEN_TASK_LIST);
   inicializar_arrebote(&pulsador, PULSADOR_ACTIVO_BAJO, PULSADOR_TICS);
-  scheduler.addTask( &scheduler, tarea_dummy, (void *) &dummy_params, 0, 1, 0, _DEFAULT_SCHEDULER_WCET_ );
+  scheduler.addTask( &scheduler, tarea_dummy, &dummy_params, 0, 2, 0, _DEFAULT_SCHEDULER_WCET_ );
+  scheduler.addTask( &scheduler, tarea_led, NULL, 0, 1, 0, _DEFAULT_SCHEDULER_WCET_ );
   /*
-  scheduler->addTask( &scheduler, tarea_a, (void *) &a_task_params,  50, 2, 0, _DEFAULT_SCHEDULER_WCET_ );
-  scheduler->addTask( &scheduler, tarea_b, (void *) &b_task_params, 120, 3, 0, _DEFAULT_SCHEDULER_WCET_ );
-  scheduler->addTask( &scheduler, tarea_c, (void *) &c_task_params, 310, 1, 0, _DEFAULT_SCHEDULER_WCET_ );
+  scheduler->addTask( &scheduler, tarea_a, &a_task_params,  50, 2, 0, _DEFAULT_SCHEDULER_WCET_ );
+  scheduler->addTask( &scheduler, tarea_b, &b_task_params, 120, 3, 0, _DEFAULT_SCHEDULER_WCET_ );
+  scheduler->addTask( &scheduler, tarea_c, &c_task_params, 310, 1, 0, _DEFAULT_SCHEDULER_WCET_ );
   */
 
   ms_counter = HAL_GetTick();
