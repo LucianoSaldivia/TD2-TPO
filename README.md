@@ -3,7 +3,7 @@
 
 
 |          Tarea           | Responsable  | Estado |
-|--------------------------|--------------|--------|
+|:-------------------------|:------------:|:------:|
 |        Diseño PCB        |  LL y Willy  |   -    |
 |      Diseño Carcaza      |     Fran     |   -    |
 |         Pantalla         |      LL      |   -    |
