@@ -4,12 +4,12 @@
 
 |          Tarea           | Responsable  |
 |--------------------------|--------------|
-|       Disenio PCB        |  LL y Willy  |
-|     Disenio Carcaza      |     Fran     |
+|        Diseño PCB        |  LL y Willy  |
+|      Diseño Carcaza      |     Fran     |
 |         Pantalla         |      LL      |
 |            SD            |    Luchos    |
 |      Instrucciones       | Fran, Luchos |
 |          Armado          |      LL      |
-|     TDS y estructura     |      Ls      |
+|     TDS y estructura     |      LS      |
 |      Documentacion       |  el guilardo |
 | Interfaz seleccion juego |    Luchos    |
