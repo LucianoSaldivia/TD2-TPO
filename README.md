@@ -14,8 +14,8 @@
 |      Documentacion       |  el guilardo |   -    |
 | Interfaz seleccion juego |    Luchos    |   -    |
 
-Estados de Tareas:
-	"-"	-> Tarea en proceso
-	"+"	-> Tarea codeada, no testeada	
-	"T"	-> Tarea testeada, no integrada
-	"I"	-> Tarea integrada
+- Estados de Tareas:
+  - "-"	-> Tarea en proceso
+  - "+"	-> Tarea codeada, no testeada	
+  - "T"	-> Tarea testeada, no integrada
+  - "I"	-> Tarea integrada
