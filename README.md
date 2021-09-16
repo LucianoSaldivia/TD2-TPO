@@ -8,7 +8,7 @@
 |      Diseño Carcaza      |     Fran     |   -    |
 |         Pantalla         |      LL      |   -    |
 |            SD            |    Luchos    |   -    |
-|      Instrucciones       | Fran, Luchos |   -    |
+|      Instrucciones       | Fran, Luchos |   +    |
 |          Armado          |      LL      |   -    |
 |     TDS y estructura     |      LS      |   T    |
 |      Documentacion       |  el guilardo |   -    |
