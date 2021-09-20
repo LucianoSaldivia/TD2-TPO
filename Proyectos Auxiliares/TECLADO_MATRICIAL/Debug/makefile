@@ -9,6 +9,7 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include Drivers/TECLADO_MATRICIAL/src/subdir.mk
 -include Drivers/STM32F1xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
@@ -35,34 +36,34 @@ $(wildcard ../makefile.init) \
 $(wildcard ../makefile.targets) \
 
 
-BUILD_ARTIFACT_NAME := Estructura - TDS
+BUILD_ARTIFACT_NAME := TECLADO_MATRICIAL
 BUILD_ARTIFACT_EXTENSION := elf
 BUILD_ARTIFACT_PREFIX :=
 BUILD_ARTIFACT := $(BUILD_ARTIFACT_PREFIX)$(BUILD_ARTIFACT_NAME)$(if $(BUILD_ARTIFACT_EXTENSION),.$(BUILD_ARTIFACT_EXTENSION),)
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXECUTABLES += \
-Estructura\ -\ TDS.elf \
+TECLADO_MATRICIAL.elf \
 
 SIZE_OUTPUT += \
 default.size.stdout \
 
 OBJDUMP_LIST += \
-Estructura\ -\ TDS.list \
+TECLADO_MATRICIAL.list \
 
 OBJCOPY_BIN += \
-Estructura\ -\ TDS.bin \
+TECLADO_MATRICIAL.bin \
 
 
 # All Target
 all: main-build
 
 # Main-build Target
-main-build: Estructura\ -\ TDS.elf secondary-outputs
+main-build: TECLADO_MATRICIAL.elf secondary-outputs
 
 # Tool invocations
-Estructura\ -\ TDS.elf: $(OBJS) $(USER_OBJS) E:\SSD\Users\Luciano\Drive\ -\ UTN\Materias\4to\Tecnicas_digitales_II\GIT\TD2-TPO-GRUPAL\Proyectos\ Auxiliares\Estructura\ -\ TDS\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Estructura - TDS.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\SSD\Users\Luciano\Drive - UTN\Materias\4to\Tecnicas_digitales_II\GIT\TD2-TPO-GRUPAL\Proyectos Auxiliares\Estructura - TDS\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Estructura - TDS.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+TECLADO_MATRICIAL.elf: $(OBJS) $(USER_OBJS) E:\SSD\Users\Luciano\Drive\ -\ UTN\Materias\4to\Tecnicas_digitales_II\GIT\TD2-TPO-GRUPAL\Proyectos\ Auxiliares\TECLADO_MATRICIAL\STM32F103C8TX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "TECLADO_MATRICIAL.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m3 -T"E:\SSD\Users\Luciano\Drive - UTN\Materias\4to\Tecnicas_digitales_II\GIT\TD2-TPO-GRUPAL\Proyectos Auxiliares\TECLADO_MATRICIAL\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="TECLADO_MATRICIAL.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -71,19 +72,19 @@ default.size.stdout: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Estructura\ -\ TDS.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "Estructura - TDS.list"
+TECLADO_MATRICIAL.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objdump -h -S $(EXECUTABLES) > "TECLADO_MATRICIAL.list"
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Estructura\ -\ TDS.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "Estructura - TDS.bin"
+TECLADO_MATRICIAL.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "TECLADO_MATRICIAL.bin"
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(SIZE_OUTPUT)$(OBJDUMP_LIST)$(EXECUTABLES)$(OBJS)$(S_DEPS)$(S_UPPER_DEPS)$(C_DEPS)$(OBJCOPY_BIN) "Estructura - TDS.elf"
+	-$(RM) $(SIZE_OUTPUT)$(OBJDUMP_LIST)$(EXECUTABLES)$(OBJS)$(S_DEPS)$(S_UPPER_DEPS)$(C_DEPS)$(OBJCOPY_BIN) TECLADO_MATRICIAL.elf
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_BIN)
