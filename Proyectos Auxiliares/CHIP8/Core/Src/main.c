@@ -43,7 +43,7 @@
 TIM_HandleTypeDef htim4;
 
 /* USER CODE BEGIN PV */
-
+Chip8 user_chip8;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -89,7 +89,13 @@ int main(void)
   MX_GPIO_Init();
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
-
+  delay_init();
+  ST7920_Init();
+  for (int i = 0; i < SCREEN_HEIGHT; i++) {
+          for (int j = 0; j < SCREEN_WIDTH; j++) {
+        	  user_chip8.screen[i][j] = 1;
+          }
+      }
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -97,7 +103,17 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+	  	ST7920_Clear();
+	  	ST7920_SendString(0,0, "Hola");
+	  	ST7920_SendString(1,0, "vengo");
+	  	ST7920_SendString(2,0, "a");
+	  	ST7920_SendString(3,0, "flotar");
 
+	  	HAL_Delay(2000);
+	  	HAL_Delay(2000);
+
+	  	ST7920_Clear();
+	  	ST7920_DrawBitmap(&user_chip8.screen);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

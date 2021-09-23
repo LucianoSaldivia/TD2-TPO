@@ -5,7 +5,7 @@
 #include "main.h"
 
 
-void draw_graphics(uint32_t *buffer);
+void graficar(Chip8 *chip8);
 
 
 #endif // SCREEN_H

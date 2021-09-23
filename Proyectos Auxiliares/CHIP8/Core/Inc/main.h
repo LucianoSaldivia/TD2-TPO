@@ -35,8 +35,9 @@ extern "C" {
 #include "chip8.h"
 #include "chip8_t.h"
 #include "teclado.h"
-
+#include "delay.h"
 #include "ST7920_SERIAL.h"
+#include "screen.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
