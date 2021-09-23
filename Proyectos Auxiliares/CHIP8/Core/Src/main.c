@@ -93,7 +93,8 @@ int main(void)
   ST7920_Init();
   for (int i = 0; i < SCREEN_HEIGHT; i++) {
           for (int j = 0; j < SCREEN_WIDTH; j++) {
-        	  user_chip8.screen[i][j] = 1;
+        	  if (j%2 && i%2)
+        		  user_chip8.screen[i][j] = 1;
           }
       }
   /* USER CODE END 2 */
@@ -103,7 +104,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  	ST7920_Clear();
+	  /*	ST7920_Clear();
 	  	ST7920_SendString(0,0, "Hola");
 	  	ST7920_SendString(1,0, "vengo");
 	  	ST7920_SendString(2,0, "a");
@@ -111,9 +112,14 @@ int main(void)
 
 	  	HAL_Delay(2000);
 	  	HAL_Delay(2000);
-
+*/
 	  	ST7920_Clear();
-	  	ST7920_DrawBitmap(&user_chip8.screen);
+	    ST7920_GraphicMode(1);
+	  	HAL_Delay(500);
+	  	DrawFilledTriangle(1,5,10,5,6,15);
+	  	ST7920_Update();
+	  	graficar(&user_chip8);
+
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */

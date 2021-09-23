@@ -3,8 +3,8 @@
 
 
 #include "stdint.h"
-
-uint8_t image[(128 * 64)/8];
+#define DISPLAY_LENGTH_IMG (128 * 64)/8
+uint8_t image[DISPLAY_LENGTH_IMG];
 
 // A replacement for SPI_TRANSMIT
 void SendByteSPI(uint8_t byte);

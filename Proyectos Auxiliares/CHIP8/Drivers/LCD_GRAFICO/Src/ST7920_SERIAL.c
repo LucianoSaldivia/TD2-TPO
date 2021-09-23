@@ -196,6 +196,8 @@ void ST7920_Clear()
 				ST7920_SendData(0);
 			}
 		}
+		ST7920_SendCmd(0x01);   // clear the display using command
+				HAL_Delay(2); // delay >1.6 ms
 	}
 
 	else
