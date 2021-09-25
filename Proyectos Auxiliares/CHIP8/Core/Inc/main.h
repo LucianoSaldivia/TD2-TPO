@@ -38,6 +38,9 @@ extern "C" {
 #include "delay.h"
 #include "ST7920_SERIAL.h"
 #include "screen.h"
+#include "ff.h"
+#include "diskio.h"
+
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/

@@ -56,7 +56,13 @@ static void MX_TIM4_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+uint32_t get_fattime(void)
+{
+	uint32_t dia = 8;
+	uint32_t mes = 7;
+	uint32_t anio = 2020;
+	return ((anio - 1980) << 25) | (mes << 21) | (dia << 16);
+}
 /* USER CODE END 0 */
 
 /**
@@ -66,7 +72,17 @@ static void MX_TIM4_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	uint32_t t_us;
+	uint32_t ticks_sd_write;
+	uint32_t ticks_leds;
+	uint32_t bw;
+	int ton;
+	int len;
+	char datos[64];
+	FATFS fs;
+	FIL fp;
+	FILINFO fno;
+	FRESULT res;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -90,7 +106,15 @@ int main(void)
   MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
   delay_init();
-  ST7920_Init();
+	ST7920_Init();
+	f_mount(&fs, "", 0);
+	res = f_open(&fp, "0:config.txt", FA_OPEN_EXISTING | FA_READ);
+	if (res == FR_OK)
+	{
+		f_gets(datos, 64, &fp);
+		f_close(&fp);
+		ton = atoi(datos);
+	}
   for (int i = 0; i < SCREEN_HEIGHT; i++) {
           for (int j = 0; j < SCREEN_WIDTH; j++) {
         	  if (j%2 && i%2)
@@ -104,22 +128,13 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  /*	ST7920_Clear();
-	  	ST7920_SendString(0,0, "Hola");
-	  	ST7920_SendString(1,0, "vengo");
-	  	ST7920_SendString(2,0, "a");
-	  	ST7920_SendString(3,0, "flotar");
 
-	  	HAL_Delay(2000);
-	  	HAL_Delay(2000);
-*/
 	  	ST7920_Clear();
 	    ST7920_GraphicMode(1);
 	  	HAL_Delay(500);
 	  	DrawFilledTriangle(1,5,10,5,6,15);
 	  	ST7920_Update();
 	  	graficar(&user_chip8);
-
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
