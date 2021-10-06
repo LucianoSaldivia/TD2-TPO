@@ -4,23 +4,31 @@
 // Load the rom into memory starting at location 0x200
 void load_rom(Chip8 *chip8, const char *rom_filename) {
     long rom_length;
-    uint8_t *rom_buffer;
 
-    FILE *rom = fopen(rom_filename, "rb");
-    if (rom != NULL) {
+  	FIL fp;
+  	FRESULT res;
+  	FATFS fs;
+  	UINT datos_leidos;
+  	f_mount(&fs, "", 0);
+   // FILE *rom = fopen(rom_filename, "rb");
+  	res = f_open(&fp, rom_filename, FA_READ);
+    if (res == FR_OK) {
         // Get the size of the rom to allocate memory for a buffer
-        fseek(rom, 0, SEEK_END);
-        rom_length = ftell(rom); 
-        rewind(rom);
+      /*  fseek(rom, 0, SEEK_END);
+        rom_length = ftell(rom); */
 
-        rom_buffer = (uint8_t*) malloc(sizeof(uint8_t) * rom_length);
+
+    	rom_length=f_size(&fp);
+     //   rewind(rom);
+
+        //rom_buffer = (uint8_t*) malloc(sizeof(uint8_t) * rom_length);
         if (rom_buffer == NULL) {
-            printf("ERROR: Out of memory\n");
-            exit(EXIT_FAILURE);
+           // printf("ERROR: Out of memory\n");
+           // exit(EXIT_FAILURE);
         }
 
         //
-        fread(rom_buffer, sizeof(uint8_t), rom_length, rom); 
+        f_read(&fp, &rom_buffer,  rom_length,&datos_leidos);
 
         // Check that the rom is not too large for the region in memory it is placed in
         if ((PROGRAM_END_ADDR - PROGRAM_START_ADDR) >= rom_length) {
@@ -29,18 +37,18 @@ void load_rom(Chip8 *chip8, const char *rom_filename) {
             }
         }
         else {
-            printf("ERROR: ROM file too large\n");
-            exit(EXIT_FAILURE);
+          //  printf("ERROR: ROM file too large\n");
+           // exit(EXIT_FAILURE);
         }
         
     }
     else {
-        printf("ERROR: ROM file does not exist\n");
-        exit(EXIT_FAILURE);
+       // printf("ERROR: ROM file does not exist\n");
+       // exit(EXIT_FAILURE);
     }
 
-    fclose(rom);
-    free(rom_buffer);
+    f_close(&fp);
+    //free(rom_buffer);
 }
 
 

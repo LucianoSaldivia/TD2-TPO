@@ -72,17 +72,18 @@ uint32_t get_fattime(void)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	uint32_t t_us;
+	 int logging = FALSE;
+	/*uint32_t t_us;
 	uint32_t ticks_sd_write;
 	uint32_t ticks_leds;
 	uint32_t bw;
 	int ton;
 	int len;
 	char datos[64];
-	FATFS fs;
+
 	FIL fp;
 	FILINFO fno;
-	FRESULT res;
+	FRESULT res;*/
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -107,20 +108,40 @@ int main(void)
   /* USER CODE BEGIN 2 */
   delay_init();
 	ST7920_Init();
-	f_mount(&fs, "", 0);
-	res = f_open(&fp, "0:config.txt", FA_OPEN_EXISTING | FA_READ);
+	ST7920_Clear();
+	    ST7920_GraphicMode(1);
+/*
+	res = f_open(&fp, "0:test_opcode.ch8", FA_OPEN_EXISTING | FA_READ);
 	if (res == FR_OK)
 	{
 		f_gets(datos, 64, &fp);
 		f_close(&fp);
 		ton = atoi(datos);
-	}
+	}*/
   for (int i = 0; i < SCREEN_HEIGHT; i++) {
           for (int j = 0; j < SCREEN_WIDTH; j++) {
         	  if (j%2 && i%2)
         		  user_chip8.screen[i][j] = 1;
           }
       }
+  init_system(&user_chip8);
+  load_rom(&user_chip8, "0:test_opcode.ch8");
+  graficar(&user_chip8);
+
+  while(user_chip8.is_running_flag){
+         execute_instruction(&user_chip8, logging);
+
+
+
+
+         // If the draw screen flag was set to true during the last
+         // instruction, render the updated screen and then clear the flag
+         if (user_chip8.draw_screen_flag) {
+
+        	 	 graficar(&user_chip8);
+             user_chip8.draw_screen_flag = FALSE;
+         }
+  }
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -129,8 +150,7 @@ int main(void)
   {
     /* USER CODE END WHILE */
 
-	  	ST7920_Clear();
-	    ST7920_GraphicMode(1);
+
 	  	HAL_Delay(500);
 	  	DrawFilledTriangle(1,5,10,5,6,15);
 	  	ST7920_Update();
