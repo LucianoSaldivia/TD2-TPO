@@ -37,6 +37,7 @@ extern "C" {
 #include "teclado.h"
 #include "delay.h"
 #include "ST7920_SERIAL.h"
+#include "buzzer.h"
 #include "screen.h"
 #include "ff.h"
 #include "diskio.h"
@@ -45,7 +46,9 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+RTC_HandleTypeDef hrtc;
 
+TIM_HandleTypeDef htim4;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
@@ -55,17 +58,21 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-
+Chip8 user_chip8;
+volatile uint8_t buffKey;
+volatile uint8_t base_de_tiempo_timer;
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
-
+uint32_t get_fattime(void);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define BUZZER_Pin GPIO_PIN_12
+#define BUZZER_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

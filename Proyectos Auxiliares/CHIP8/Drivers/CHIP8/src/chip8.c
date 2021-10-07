@@ -1,6 +1,6 @@
 
 #include "main.h"
-
+volatile extern uint8_t base_de_tiempo_timer;
 // Load the rom into memory starting at location 0x200
 void load_rom(Chip8 *chip8, const char *rom_filename) {
     long rom_length;
@@ -99,7 +99,7 @@ void init_system(Chip8 *chip8) {
     // Set timers to 0
     chip8->delay_timer = 0;
     chip8->sound_timer = 0;
-
+    base_de_tiempo_timer = 0;
     // Keyboard setup
     for (int i = 0; i < NUM_KEYS; i++) {
         chip8->keyboard[i] = FALSE;
@@ -409,12 +409,11 @@ void process_user_input(Chip8 *chip8) {
 * the corrisponding timer is decremented by 1
 */
 void update_timers(Chip8 *chip8) {
-    if (chip8->delay_timer > 0) {
+		// Increnmento una variable en 1 en el systick, 16ms aprox 60 Hz
+		if (chip8->delay_timer > 0)
         chip8->delay_timer--;
-    }
-    if (chip8->sound_timer > 0) {
+    if (chip8->sound_timer > 0)
         chip8->sound_timer--;
-    }
 }
 
 

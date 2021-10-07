@@ -37,7 +37,7 @@ void ST7920_Clear();
 
 // Draw bitmap on the display
 void ST7920_DrawBitmap(const unsigned char* graphic);
-
+///void ST7920_DrawBitmap(uint32_t * graphic);
 
 
 // Update the display with the selected graphics

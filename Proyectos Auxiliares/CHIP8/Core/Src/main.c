@@ -40,29 +40,26 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-TIM_HandleTypeDef htim4;
+extern RTC_HandleTypeDef hrtc;
+
+extern TIM_HandleTypeDef htim4;
 
 /* USER CODE BEGIN PV */
-Chip8 user_chip8;
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM4_Init(void);
+static void MX_RTC_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint32_t get_fattime(void)
-{
-	uint32_t dia = 8;
-	uint32_t mes = 7;
-	uint32_t anio = 2020;
-	return ((anio - 1980) << 25) | (mes << 21) | (dia << 16);
-}
+
 /* USER CODE END 0 */
 
 /**
@@ -72,18 +69,7 @@ uint32_t get_fattime(void)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	 int logging = FALSE;
-	/*uint32_t t_us;
-	uint32_t ticks_sd_write;
-	uint32_t ticks_leds;
-	uint32_t bw;
-	int ton;
-	int len;
-	char datos[64];
-
-	FIL fp;
-	FILINFO fno;
-	FRESULT res;*/
+	int logging = FALSE;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -92,70 +78,40 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
   /* USER CODE END Init */
 
   /* Configure the system clock */
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM4_Init();
+  MX_RTC_Init();
   /* USER CODE BEGIN 2 */
-  delay_init();
-	ST7920_Init();
-	ST7920_Clear();
-	    ST7920_GraphicMode(1);
-/*
-	res = f_open(&fp, "0:test_opcode.ch8", FA_OPEN_EXISTING | FA_READ);
-	if (res == FR_OK)
-	{
-		f_gets(datos, 64, &fp);
-		f_close(&fp);
-		ton = atoi(datos);
-	}*/
-  for (int i = 0; i < SCREEN_HEIGHT; i++) {
-          for (int j = 0; j < SCREEN_WIDTH; j++) {
-        	  if (j%2 && i%2)
-        		  user_chip8.screen[i][j] = 1;
-          }
-      }
+  init_graphics();
   init_system(&user_chip8);
-  load_rom(&user_chip8, "0:test_opcode.ch8");
-  graficar(&user_chip8);
-
-  while(user_chip8.is_running_flag){
-         execute_instruction(&user_chip8, logging);
-
-
-
-
-         // If the draw screen flag was set to true during the last
-         // instruction, render the updated screen and then clear the flag
-         if (user_chip8.draw_screen_flag) {
-
-        	 	 graficar(&user_chip8);
-             user_chip8.draw_screen_flag = FALSE;
-         }
-  }
+  load_rom(&user_chip8, "0:spacejam.ch8");
   /* USER CODE END 2 */
-
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
 
-
-	  	HAL_Delay(500);
-	  	DrawFilledTriangle(1,5,10,5,6,15);
-	  	ST7920_Update();
-	  	graficar(&user_chip8);
     /* USER CODE BEGIN 3 */
+  	 while(user_chip8.is_running_flag){
+  	         execute_instruction(&user_chip8, logging); // Ejecuto las instrucciones
+  	         process_user_input (&user_chip8);  				// Leo las entradas
+  	         if (user_chip8.draw_screen_flag) { 				// Grafico
+  	        	 graficar(&user_chip8);
+  	           user_chip8.draw_screen_flag = FALSE;
+  	         }
+  	         actualizar_buzzer();
+  	        // HAL_RTC_GetTime(&hrtc,&s_Time, RTC_FORMAT_BIN);
+  	  }
   }
   /* USER CODE END 3 */
 }
@@ -168,13 +124,15 @@ void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE|RCC_OSCILLATORTYPE_LSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
+  RCC_OscInitStruct.LSEState = RCC_LSE_ON;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
@@ -196,6 +154,74 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_RTC;
+  PeriphClkInit.RTCClockSelection = RCC_RTCCLKSOURCE_LSE;
+  if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
+  {
+    Error_Handler();
+  }
+}
+
+/**
+  * @brief RTC Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_RTC_Init(void)
+{
+
+  /* USER CODE BEGIN RTC_Init 0 */
+
+  /* USER CODE END RTC_Init 0 */
+
+
+
+  /* USER CODE BEGIN RTC_Init 1 */
+
+  /* USER CODE END RTC_Init 1 */
+  /** Initialize RTC Only
+  */
+  hrtc.Instance = RTC;
+  hrtc.Init.AsynchPrediv = RTC_AUTO_1_SECOND;
+  hrtc.Init.OutPut = RTC_OUTPUTSOURCE_NONE;
+  if (HAL_RTC_Init(&hrtc) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /* USER CODE BEGIN Check_RTC_BKUP */
+
+  /* USER CODE END Check_RTC_BKUP */
+
+  /** Initialize RTC and set the Time and Date
+  */
+
+
+  RTC_TimeTypeDef sTime = {0};
+	RTC_DateTypeDef DateToUpdate = {0};
+
+  sTime.Hours = 0x0;
+  sTime.Minutes = 0x13;
+  sTime.Seconds = 0x55;
+
+  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  DateToUpdate.WeekDay = RTC_WEEKDAY_THURSDAY;
+  DateToUpdate.Month = RTC_MONTH_OCTOBER;
+  DateToUpdate.Date = 0x7;
+  DateToUpdate.Year = 0x21;
+
+  if (HAL_RTC_SetDate(&hrtc, &DateToUpdate, RTC_FORMAT_BCD) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /* USER CODE BEGIN RTC_Init 2 */
+
+  /* USER CODE END RTC_Init 2 */
+
 }
 
 /**
@@ -253,21 +279,22 @@ static void MX_GPIO_Init(void)
   GPIO_InitTypeDef GPIO_InitStruct = {0};
 
   /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
-                          |GPIO_PIN_12|GPIO_PIN_15, GPIO_PIN_RESET);
+                          |BUZZER_Pin|GPIO_PIN_15, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, GPIO_PIN_3|GPIO_PIN_4|GPIO_PIN_5, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : PA0 PA1 PA2 PA3
-                           PA12 PA15 */
+                           BUZZER_Pin PA15 */
   GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3
-                          |GPIO_PIN_12|GPIO_PIN_15;
+                          |BUZZER_Pin|GPIO_PIN_15;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
