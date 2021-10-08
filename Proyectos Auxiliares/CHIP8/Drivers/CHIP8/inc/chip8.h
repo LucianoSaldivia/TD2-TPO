@@ -25,7 +25,7 @@ const static uint8_t KEYMAP[NUM_KEYS] = {
     15  // F
 };
 
-uint8_t rom_buffer [4096/2];
+uint8_t rom_buffer [4096];
 
 void load_rom(Chip8 *chip8, const char *rom_filename);
 void init_system(Chip8 *chip8);

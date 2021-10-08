@@ -185,7 +185,7 @@ void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
 	disk_timerproc();
-	DriverTeclado();
+//	DriverTeclado();
 
 	if (base_de_tiempo_timer > 1){
 		base_de_tiempo_timer=0;

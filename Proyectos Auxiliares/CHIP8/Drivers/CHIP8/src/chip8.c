@@ -390,7 +390,7 @@ void execute_instruction(Chip8 *chip8, int logging) {
 void process_user_input(Chip8 *chip8) {
 
 	uint8_t tecla;
-
+	DriverTeclado();
 	tecla=Teclado();
 	//Si la tecla presionada coincide con la que tengo en el array le pongo TRUE sino FALSE
 	for (int i = 0; i < NUM_KEYS; i++) {

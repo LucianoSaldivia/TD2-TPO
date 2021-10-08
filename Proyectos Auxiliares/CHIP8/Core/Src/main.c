@@ -93,7 +93,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   init_graphics();
   init_system(&user_chip8);
-  load_rom(&user_chip8, "0:spacejam.ch8");
+  load_rom(&user_chip8, "0:pong.ch8");
   /* USER CODE END 2 */
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -103,14 +103,15 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
   	 while(user_chip8.is_running_flag){
-  	         execute_instruction(&user_chip8, logging); // Ejecuto las instrucciones
-  	         process_user_input (&user_chip8);  				// Leo las entradas
-  	         if (user_chip8.draw_screen_flag) { 				// Grafico
-  	        	 graficar(&user_chip8);
-  	           user_chip8.draw_screen_flag = FALSE;
-  	         }
-  	         actualizar_buzzer();
-  	        // HAL_RTC_GetTime(&hrtc,&s_Time, RTC_FORMAT_BIN);
+			 process_user_input (&user_chip8);  				// Leo las entradas
+			 execute_instruction(&user_chip8, logging); // Ejecuto las instrucciones
+
+			 if (user_chip8.draw_screen_flag) { 				// Grafico
+				 graficar(&user_chip8);
+				 user_chip8.draw_screen_flag = FALSE;
+			 }
+			 actualizar_buzzer();
+			// HAL_RTC_GetTime(&hrtc,&s_Time, RTC_FORMAT_BIN);
   	  }
   }
   /* USER CODE END 3 */

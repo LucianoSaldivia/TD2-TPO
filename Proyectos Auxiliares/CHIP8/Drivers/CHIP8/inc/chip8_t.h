@@ -21,8 +21,8 @@
 #define PROGRAM_START_ADDR 0x200
 #define PROGRAM_END_ADDR 0xFFF
 
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
+#define SCREEN_WIDTH 128/2
+#define SCREEN_HEIGHT 64/2
 
 #define TRUE 1
 #define FALSE 0
