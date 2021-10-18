@@ -4,9 +4,7 @@
 
 #include "stdint.h"
 
-#define length_img (128 * 64)/8
-
-uint8_t image[length_img];
+uint8_t image[(128 * 64)/8];
 
 // A replacement for SPI_TRANSMIT
 void SendByteSPI(uint8_t byte);
