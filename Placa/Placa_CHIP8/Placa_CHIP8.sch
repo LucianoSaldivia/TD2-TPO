@@ -58,30 +58,22 @@ Wire Wire Line
 	3100 1500 2800 1500
 Wire Wire Line
 	3100 1600 2800 1600
-Text Label 5150 3950 0    50   ~ 0
+Text Label 5100 3950 0    50   ~ 0
 C3
-Text Label 5150 4050 0    50   ~ 0
+Text Label 5100 4050 0    50   ~ 0
 C2
-Text Label 5150 4150 0    50   ~ 0
+Text Label 5100 4150 0    50   ~ 0
 C1
-Text Label 5150 4250 0    50   ~ 0
+Text Label 5100 4250 0    50   ~ 0
 F4
-Text Label 5150 4350 0    50   ~ 0
+Text Label 5100 4350 0    50   ~ 0
 F3
-Text Label 5150 4450 0    50   ~ 0
+Text Label 5100 4450 0    50   ~ 0
 F2
-Text Label 5150 4550 0    50   ~ 0
+Text Label 5100 4550 0    50   ~ 0
 F1
 Wire Wire Line
-	2900 2650 2650 2650
-Wire Wire Line
 	2900 2550 2650 2550
-Wire Wire Line
-	2900 2750 2650 2750
-Wire Wire Line
-	2900 2850 2650 2850
-Wire Wire Line
-	2900 2950 2650 2950
 Wire Wire Line
 	2900 3050 2650 3050
 Wire Wire Line
@@ -110,14 +102,14 @@ F 3 "" H 2650 2400 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	2650 2400 2650 2550
-Text Label 2650 2950 0    50   ~ 0
-MISO
-Text Label 2650 2850 0    50   ~ 0
-CLK
-Text Label 2650 2750 0    50   ~ 0
-MOSI
-Text Label 2650 2650 0    50   ~ 0
-CS
+Text Label 2500 2950 0    50   ~ 0
+SD_MISO
+Text Label 2500 2850 0    50   ~ 0
+SD_CLK
+Text Label 2500 2750 0    50   ~ 0
+SD_MOSI
+Text Label 2500 2650 0    50   ~ 0
+SD_CS
 $Comp
 L Device:Buzzer BZ1
 U 1 1 61517873
@@ -183,7 +175,7 @@ Wire Wire Line
 	2600 4550 2500 4550
 Wire Wire Line
 	2200 4550 1900 4550
-Text Label 1900 4550 0    50   ~ 0
+Text Label 1300 4550 2    50   ~ 0
 Buzzer
 $Comp
 L Device:Battery_Cell BT1
@@ -209,12 +201,6 @@ F 3 "" H 2850 7050 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	2850 6950 2850 7000
-Wire Wire Line
-	9000 2900 9300 2900
-Wire Wire Line
-	9000 3000 9300 3000
-Wire Wire Line
-	9000 3100 9300 3100
 Wire Wire Line
 	9300 4400 8800 4400
 $Comp
@@ -245,8 +231,6 @@ Wire Wire Line
 	8800 4500 8800 4550
 Wire Wire Line
 	8800 4400 8800 4350
-Wire Wire Line
-	9300 4200 9000 4200
 $Comp
 L power:GND #PWR0110
 U 1 1 6155A581
@@ -273,32 +257,18 @@ NoConn ~ 9300 3800
 NoConn ~ 9300 3900
 NoConn ~ 9300 4100
 NoConn ~ 9300 4300
-Text Label 9000 2900 0    50   ~ 0
-LCD_1
-Text Label 9000 3000 0    50   ~ 0
-LCD_2
-Text Label 9000 3100 0    50   ~ 0
-LCD_3
-Text Label 9000 4200 0    50   ~ 0
-LCD_4
+Text Label 8950 2900 0    50   ~ 0
+LCD_CS
+Text Label 8950 4200 0    50   ~ 0
+LCD_RST
 Text Label 7150 4850 2    50   ~ 0
 Buzzer
-Text Label 7150 3850 2    50   ~ 0
-LCD_2
 Text Label 7150 3950 2    50   ~ 0
-LCD_4
-Text Label 7150 3750 2    50   ~ 0
-LCD_1
-Text Label 7150 3650 2    50   ~ 0
-LCD_3
+LCD_RST
 Text Label 7150 4050 2    50   ~ 0
-CS
+SD_CS
 Text Label 7150 4150 2    50   ~ 0
-CLK
-Text Label 7150 4250 2    50   ~ 0
-MISO
-Text Label 7150 4350 2    50   ~ 0
-MOSI
+SD_CLK
 $Comp
 L power:+5V #PWR0111
 U 1 1 61591E63
@@ -397,9 +367,6 @@ $EndComp
 NoConn ~ 6800 4450
 NoConn ~ 6800 4750
 NoConn ~ 5500 4650
-NoConn ~ 5500 4750
-NoConn ~ 5500 4850
-NoConn ~ 5500 5150
 NoConn ~ 5500 3750
 NoConn ~ 5500 3650
 NoConn ~ 5500 3450
@@ -505,12 +472,6 @@ Wire Wire Line
 Text Notes 800  7400 0    50   ~ 0
 PWR_FLAG: Flag interno para obtener un DRC sin errores. No modifica en nada al PCB
 Wire Wire Line
-	6800 3650 7150 3650
-Wire Wire Line
-	6800 3750 7150 3750
-Wire Wire Line
-	6800 3850 7150 3850
-Wire Wire Line
 	6800 3950 7150 3950
 Wire Wire Line
 	6800 4050 7150 4050
@@ -524,20 +485,6 @@ Wire Wire Line
 	6800 4850 7150 4850
 Wire Wire Line
 	6800 5150 7150 5150
-Wire Wire Line
-	5150 4550 5500 4550
-Wire Wire Line
-	5150 4450 5500 4450
-Wire Wire Line
-	5150 4350 5500 4350
-Wire Wire Line
-	5150 4250 5500 4250
-Wire Wire Line
-	5150 4150 5500 4150
-Wire Wire Line
-	5150 4050 5500 4050
-Wire Wire Line
-	5150 3950 5500 3950
 Wire Wire Line
 	6800 4650 7150 4650
 Wire Wire Line
@@ -653,6 +600,71 @@ F 1 "PWR_FLAG" H 2500 6673 50  0000 C CNN
 F 2 "" H 2500 6500 50  0001 C CNN
 F 3 "~" H 2500 6500 50  0001 C CNN
 	1    2500 6500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2500 2650 2900 2650
+Wire Wire Line
+	2500 2750 2900 2750
+Wire Wire Line
+	2500 2850 2900 2850
+Wire Wire Line
+	2500 2950 2900 2950
+Text Label 7150 4250 2    50   ~ 0
+SD_MISO
+Text Label 7150 4350 2    50   ~ 0
+SD_MOSI
+NoConn ~ 5500 4750
+Text Label 5100 4850 0    50   ~ 0
+LCD_CS
+Text Label 5100 5150 0    50   ~ 0
+LCD_MOSI
+Wire Wire Line
+	5100 3950 5500 3950
+Wire Wire Line
+	5100 4050 5500 4050
+Wire Wire Line
+	5100 4150 5500 4150
+Wire Wire Line
+	5100 4250 5500 4250
+Wire Wire Line
+	5100 4350 5500 4350
+Wire Wire Line
+	5100 4450 5500 4450
+Wire Wire Line
+	5100 4550 5500 4550
+Wire Wire Line
+	5100 4850 5500 4850
+Wire Wire Line
+	5100 5150 5500 5150
+Wire Wire Line
+	5500 4950 5100 4950
+Text Label 5100 4950 0    50   ~ 0
+LCD_CLK
+NoConn ~ 6800 3650
+NoConn ~ 6800 3750
+NoConn ~ 6800 3850
+Wire Wire Line
+	8950 4200 9300 4200
+Wire Wire Line
+	8950 3100 9300 3100
+Wire Wire Line
+	9300 3000 8950 3000
+Wire Wire Line
+	8950 2900 9300 2900
+Text Label 8950 3000 0    50   ~ 0
+LCD_MOSI
+Text Label 8950 3100 0    50   ~ 0
+LCD_CLK
+$Comp
+L Device:Jumper JP1
+U 1 1 617816B8
+P 1600 4550
+F 0 "JP1" H 1600 4814 50  0000 C CNN
+F 1 "Jumper" H 1600 4723 50  0000 C CNN
+F 2 "" H 1600 4550 50  0001 C CNN
+F 3 "~" H 1600 4550 50  0001 C CNN
+	1    1600 4550
 	1    0    0    -1  
 $EndComp
 $EndSCHEMATC
