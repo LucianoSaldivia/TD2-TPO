@@ -40,25 +40,7 @@ static uint16_t pin_cs;
 
 void SendByteSPI(uint8_t byte)
 {
-	/*
-	for(int i=0;i<8;i++)
-	{
-		if((byte<<i)&0x80)
-			{
-				HAL_GPIO_WritePin(SID_PORT, SID_PIN, GPIO_PIN_SET);  // SID=1  OR MOSI
-			}
-
-		else HAL_GPIO_WritePin(SID_PORT, SID_PIN, GPIO_PIN_RESET);  // SID=0
-
-		HAL_GPIO_WritePin(SCLK_PORT, SCLK_PIN, GPIO_PIN_RESET);  // SCLK =0  OR SCK
-
-		HAL_GPIO_WritePin(SCLK_PORT, SCLK_PIN, GPIO_PIN_SET);  // SCLK=1
-
-	}*/
-
-//	delay_us(1);
 	HAL_SPI_Transmit(spi_handler, (void*) &byte, 1, 10);
-	//delay_us(1);
 
 }
 
@@ -67,28 +49,21 @@ void SendByteSPI(uint8_t byte)
 
 void ST7920_SendCmd (uint8_t cmd)
 {
-
-	//HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);  // PUll the CS high
 	HAL_GPIO_WritePin(gpio_cs, pin_cs, GPIO_PIN_SET);
 	SendByteSPI(0xf8+(0<<1));  // send the SYNC + RS(0)
 	SendByteSPI(cmd&0xf0);  // send the higher nibble first
 	SendByteSPI((cmd<<4)&0xf0);  // send the lower nibble
-	delay_us(50);
-
+	//delay_us(50);
 	HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_RESET);  // PUll the CS LOW
 
 }
 
 void ST7920_SendData (uint8_t data)
 {
-
-	//HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_SET);  // PUll the CS high
-
 	SendByteSPI(0xf8+(1<<1));  // send the SYNC + RS(1)
 	SendByteSPI(data&0xf0);  // send the higher nibble first
 	SendByteSPI((data<<4)&0xf0);  // send the lower nibble
-	delay_us(50);
-	//HAL_GPIO_WritePin(CS_PORT, CS_PIN, GPIO_PIN_RESET);  // PUll the CS LOW
+//	delay_us(50);
 }
 
 void ST7920_SendString(int row, int col, char* string)
@@ -278,7 +253,25 @@ void SetPixel(uint8_t x, uint8_t y)
   }
 
 }
+void ClearPixel(uint8_t x, uint8_t y)
+{
+  if (y < numRows && x < numCols)
+  {
+    uint8_t *p = image + ((y * (numCols/8)) + (x/8));
+    *p &= ~(0x80u >> (x%8));
 
+    *image = *p;
+
+    // Change the dirty rectangle to account for a pixel being dirty (we assume it was changed)
+    if (startRow > y) { startRow = y; }
+    if (endRow <= y)  { endRow = y + 1; }
+    if (startCol > x) { startCol = x; }
+    if (endCol <= x)  { endCol = x + 1; }
+
+
+  }
+
+}
 /* draw a line
  * start point (X0, Y0)
  * end point (X1, Y1)

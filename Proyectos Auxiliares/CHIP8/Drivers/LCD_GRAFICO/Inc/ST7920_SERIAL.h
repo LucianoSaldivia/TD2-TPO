@@ -59,6 +59,7 @@ void ST7920_Init (SPI_HandleTypeDef *spi, GPIO_TypeDef *GPIO_cs,
 
 // Set a pixel on the display
 void SetPixel(uint8_t x, uint8_t y);
+void ClearPixel(uint8_t x, uint8_t y);
 
 
 

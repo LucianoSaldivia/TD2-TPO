@@ -97,7 +97,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   init_graphics();
   init_system(&user_chip8);
-  load_rom(&user_chip8, "0:pong.ch8");
+  load_rom(&user_chip8, "0:BLINKY.ch8");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -111,10 +111,10 @@ int main(void)
 			 process_user_input (&user_chip8);  				// Leo las entradas
 			 execute_instruction(&user_chip8, logging); // Ejecuto las instrucciones
 
-			 if (user_chip8.draw_screen_flag) { 				// Grafico
+			/* if (user_chip8.draw_screen_flag) { 				// Grafico
 				 graficar(&user_chip8);
 				 user_chip8.draw_screen_flag = FALSE;
-			 }
+			 }*/
 			 actualizar_buzzer();
 			// HAL_RTC_GetTime(&hrtc,&s_Time, RTC_FORMAT_BIN);
   	  }
