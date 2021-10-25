@@ -10,7 +10,7 @@ void cls(Chip8 *chip8) {
             chip8->screen[i][j] = 0;
         }
     }
-    chip8->draw_screen_flag = TRUE;
+  //  chip8->draw_screen_flag = TRUE;
     chip8->pc_reg += 2;
 }
 
@@ -366,15 +366,17 @@ void drw(Chip8 *chip8) {
                 if (chip8->screen[y_location + y_coordinate][x_location + x_coordinate] == 1) {
                     chip8->V[0xF] = TRUE;
                 }
-                if ( chip8->screen[y_location + y_coordinate][x_location + x_coordinate] ^= 1)
+                if ( chip8->screen[y_location + y_coordinate][x_location + x_coordinate] ^= 1){
                 	SetPixel(2*(x_location + x_coordinate),2*(y_location + y_coordinate));
-                else
+                }
+                else{
                 	ClearPixel(2*(x_location + x_coordinate),2*(y_location + y_coordinate));
+                }
             }
         }
     }
     ST7920_Update();
-    chip8->draw_screen_flag = TRUE;
+    //chip8->draw_screen_flag = TRUE;
     chip8->pc_reg += 2;
 }
 

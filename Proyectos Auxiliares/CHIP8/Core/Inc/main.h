@@ -61,6 +61,7 @@ TIM_HandleTypeDef htim4;
 Chip8 user_chip8;
 volatile uint8_t buffKey;
 volatile uint8_t base_de_tiempo_timer;
+uint8_t pase_por_systick;
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/

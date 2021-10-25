@@ -2,54 +2,64 @@
 #include "main.h"
 volatile extern uint8_t base_de_tiempo_timer;
 // Load the rom into memory starting at location 0x200
-void load_rom(Chip8 *chip8, const char *rom_filename) {
+void load_rom(Chip8 *chip8) {
     long rom_length;
-
   	FIL fp;
   	FRESULT res;
   	FATFS fs;
   	UINT datos_leidos;
+  	DIR dp;
+  	static FILINFO fno;
+  	uint8_t tecla;
+
   	f_mount(&fs, "", 0);
-   // FILE *rom = fopen(rom_filename, "rb");
-  	res = f_open(&fp, rom_filename, FA_READ);
+  	res = f_opendir(&dp, "/");
+
     if (res == FR_OK) {
-        // Get the size of the rom to allocate memory for a buffer
-      /*  fseek(rom, 0, SEEK_END);
-        rom_length = ftell(rom); */
+    	f_readdir(&dp, &fno); //Leo el directorio
+			ST7920_SendString(0, 0, fno.fname);
+    	while(1){
 
+    		if(fno.fname[0] == 0)
+    			f_rewinddir(&dp);
+    		if (pase_por_systick){
+    			tecla=Teclado();
+    			pase_por_systick = 0;
+    		}
+    		else
+    			buffKey = NO_KEY; // Ya lei y reseteo el buffer sino corre mas rapido el core que el systick
+    		switch(tecla){
+					case 2:
+						ST7920_Clear();
+						f_readdir(&dp, &fno); //Leo el directorio
+						ST7920_SendString(0, 0, fno.fname);
+						buffKey = NO_KEY;
+					break;
+					case 5:
+						res = f_open(&fp, fno.fname, FA_READ);
+						rom_length=f_size(&fp);
+						f_read(&fp, &rom_buffer,  rom_length,&datos_leidos);
+						if ((PROGRAM_END_ADDR - PROGRAM_START_ADDR) >= rom_length) {
+							for(int i = 0; i < rom_length; i++) {
+									chip8->ram[i + 0x200] = rom_buffer[i];
+							}
+						}
+						ST7920_Clear();
+						ST7920_GraphicMode(1); // Paso a modo grafico para mostrar la rom
 
-    	rom_length=f_size(&fp);
-     //   rewind(rom);
-
-        //rom_buffer = (uint8_t*) malloc(sizeof(uint8_t) * rom_length);
-        if (rom_buffer == NULL) {
-           // printf("ERROR: Out of memory\n");
-           // exit(EXIT_FAILURE);
-        }
-
-        //
-        f_read(&fp, &rom_buffer,  rom_length,&datos_leidos);
-
-        // Check that the rom is not too large for the region in memory it is placed in
-        if ((PROGRAM_END_ADDR - PROGRAM_START_ADDR) >= rom_length) {
-            for(int i = 0; i < rom_length; i++) {
-                chip8->ram[i + 0x200] = rom_buffer[i];
-            }
-        }
-        else {
-          //  printf("ERROR: ROM file too large\n");
-           // exit(EXIT_FAILURE);
-        }
-        
+				    f_closedir(&dp);
+				    f_close(&fp);
+				    return;
+					break;
+					case 8:
+						f_rewinddir(&dp);
+						buffKey = NO_KEY; // Ya lei y reseteo el buffer sino corre mas rapido el core que el systick
+					break;
+    		}
+    	}
     }
-    else {
-       // printf("ERROR: ROM file does not exist\n");
-       // exit(EXIT_FAILURE);
-    }
-
-    f_close(&fp);
-    //free(rom_buffer);
 }
+
 
 
 /* 
@@ -60,9 +70,9 @@ void load_rom(Chip8 *chip8, const char *rom_filename) {
 */
 void init_system(Chip8 *chip8) {
 
-    chip8->is_running_flag = TRUE;
+    /*chip8->is_running_flag = TRUE;
     chip8->draw_screen_flag = FALSE;
-    chip8->is_paused_flag = FALSE;
+    chip8->is_paused_flag = FALSE;*/
 
     chip8->pc_reg = PC_START;
     chip8->current_op = 0;
@@ -110,9 +120,9 @@ void init_system(Chip8 *chip8) {
 // Largely similar to the init function, however all of the ram is not cleared 
 // (so the rom does not have to be re-loaded into memory)
 void reset_system(Chip8 *chip8) {
-    chip8->is_running_flag = TRUE;
+   /* chip8->is_running_flag = TRUE;
     chip8->draw_screen_flag = FALSE;
-    chip8->is_paused_flag = FALSE;
+    chip8->is_paused_flag = FALSE;*/
 
     chip8->pc_reg = PC_START;
     chip8->current_op = 0;

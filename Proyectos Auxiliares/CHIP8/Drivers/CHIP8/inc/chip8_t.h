@@ -1,12 +1,6 @@
 #ifndef CHIP8_T_H
 #define CHIP8_T_H
 
-/*
-*
-* Definition of the chip8 struct and some constants 
-* to be used by the program. 
-*
-*/
 
 #define NUM_KEYS 16
 #define NUM_V_REGISTERS 16
@@ -73,11 +67,11 @@ struct Chip8_t {
     // keys (16)
     uint8_t keyboard[NUM_KEYS];
     uint8_t was_key_pressed;
-
+/*
     // Status flags for the emulator
     uint8_t is_running_flag;
     uint8_t draw_screen_flag;
-    uint8_t is_paused_flag;
+    uint8_t is_paused_flag;*/
 };
 
 #endif // CHIP8_T_H

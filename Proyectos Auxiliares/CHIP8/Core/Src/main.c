@@ -47,7 +47,6 @@ SPI_HandleTypeDef hspi2;
 TIM_HandleTypeDef htim4;
 
 /* USER CODE BEGIN PV */
-
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -62,7 +61,6 @@ static void MX_SPI2_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
 /* USER CODE END 0 */
 
 /**
@@ -72,7 +70,7 @@ static void MX_SPI2_Init(void);
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	int logging = FALSE;
+	int logging = TRUE;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -97,7 +95,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   init_graphics();
   init_system(&user_chip8);
-  load_rom(&user_chip8, "0:BLINKY.ch8");
+	load_rom(&user_chip8);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -105,19 +103,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
-    /* USER CODE BEGIN 3 */
-  	 while(user_chip8.is_running_flag){
 			 process_user_input (&user_chip8);  				// Leo las entradas
 			 execute_instruction(&user_chip8, logging); // Ejecuto las instrucciones
-
-			/* if (user_chip8.draw_screen_flag) { 				// Grafico
-				 graficar(&user_chip8);
-				 user_chip8.draw_screen_flag = FALSE;
-			 }*/
 			 actualizar_buzzer();
-			// HAL_RTC_GetTime(&hrtc,&s_Time, RTC_FORMAT_BIN);
-  	  }
   }
   /* USER CODE END 3 */
 }
