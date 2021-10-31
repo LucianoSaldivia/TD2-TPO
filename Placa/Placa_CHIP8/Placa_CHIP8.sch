@@ -14,7 +14,7 @@ Comment3 ""
 Comment4 ""
 $EndDescr
 $Comp
-L Connector:Conn_01x08_Male J1
+L Placa_CHIP8-rescue:Conn_01x08_Male-Connector J1
 U 1 1 61500CE4
 P 2600 1300
 F 0 "J1" H 2600 1800 50  0000 C CNN
@@ -79,7 +79,7 @@ Wire Wire Line
 Wire Wire Line
 	2650 3050 2650 3150
 $Comp
-L power:GND #PWR0101
+L Placa_CHIP8-rescue:GND-power #PWR0101
 U 1 1 61511F8F
 P 2650 3150
 F 0 "#PWR0101" H 2650 2900 50  0001 C CNN
@@ -90,7 +90,7 @@ F 3 "" H 2650 3150 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:+3.3V #PWR0102
+L Placa_CHIP8-rescue:+3.3V-power #PWR0102
 U 1 1 615124CF
 P 2650 2400
 F 0 "#PWR0102" H 2650 2250 50  0001 C CNN
@@ -111,7 +111,7 @@ SD_MOSI
 Text Label 2500 2650 0    50   ~ 0
 SD_CS
 $Comp
-L Device:Buzzer BZ1
+L Placa_CHIP8-rescue:Buzzer-Device BZ1
 U 1 1 61517873
 P 3000 4150
 F 0 "BZ1" H 3152 4179 50  0000 L CNN
@@ -122,7 +122,7 @@ F 3 "~" V 2975 4250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Transistor_BJT:BC337 Q1
+L Placa_CHIP8-rescue:BC337-Transistor_BJT Q1
 U 1 1 61518038
 P 2800 4550
 F 0 "Q1" H 2991 4596 50  0000 L CNN
@@ -133,7 +133,7 @@ F 3 "https://diotec.com/tl_files/diotec/files/pdf/datasheets/bc337.pdf" H 2800 4
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR0103
+L Placa_CHIP8-rescue:GND-power #PWR0103
 U 1 1 615193E1
 P 2900 4900
 F 0 "#PWR0103" H 2900 4650 50  0001 C CNN
@@ -144,7 +144,7 @@ F 3 "" H 2900 4900 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R1
+L Placa_CHIP8-rescue:R-Device R1
 U 1 1 61519A86
 P 2350 4550
 F 0 "R1" V 2143 4550 50  0000 C CNN
@@ -155,7 +155,7 @@ F 3 "~" H 2350 4550 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 $Comp
-L power:+5V #PWR0104
+L Placa_CHIP8-rescue:+5V-power #PWR0104
 U 1 1 6151A6DF
 P 2900 3950
 F 0 "#PWR0104" H 2900 3800 50  0001 C CNN
@@ -173,12 +173,10 @@ Wire Wire Line
 	2900 4750 2900 4900
 Wire Wire Line
 	2600 4550 2500 4550
-Wire Wire Line
-	2200 4550 1900 4550
 Text Label 1300 4550 2    50   ~ 0
 Buzzer
 $Comp
-L Device:Battery_Cell BT1
+L Placa_CHIP8-rescue:Battery_Cell-Device BT1
 U 1 1 615277F3
 P 2850 6850
 F 0 "BT1" H 2968 6946 50  0000 L CNN
@@ -189,7 +187,7 @@ F 3 "~" V 2850 6910 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR0105
+L Placa_CHIP8-rescue:GND-power #PWR0105
 U 1 1 6152B7C4
 P 2850 7050
 F 0 "#PWR0105" H 2850 6800 50  0001 C CNN
@@ -204,7 +202,7 @@ Wire Wire Line
 Wire Wire Line
 	9300 4400 8800 4400
 $Comp
-L power:+5V #PWR0108
+L Placa_CHIP8-rescue:+5V-power #PWR0108
 U 1 1 61553D8C
 P 8800 4350
 F 0 "#PWR0108" H 8800 4200 50  0001 C CNN
@@ -215,7 +213,7 @@ F 3 "" H 8800 4350 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR0109
+L Placa_CHIP8-rescue:GND-power #PWR0109
 U 1 1 61554437
 P 8800 4550
 F 0 "#PWR0109" H 8800 4300 50  0001 C CNN
@@ -232,7 +230,7 @@ Wire Wire Line
 Wire Wire Line
 	8800 4400 8800 4350
 $Comp
-L power:GND #PWR0110
+L Placa_CHIP8-rescue:GND-power #PWR0110
 U 1 1 6155A581
 P 8650 4100
 F 0 "#PWR0110" H 8650 3850 50  0001 C CNN
@@ -270,7 +268,7 @@ SD_CS
 Text Label 7150 4150 2    50   ~ 0
 SD_CLK
 $Comp
-L power:+5V #PWR0111
+L Placa_CHIP8-rescue:+5V-power #PWR0111
 U 1 1 61591E63
 P 9600 5800
 F 0 "#PWR0111" H 9600 5650 50  0001 C CNN
@@ -281,7 +279,7 @@ F 3 "" H 9600 5800 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR0112
+L Placa_CHIP8-rescue:GND-power #PWR0112
 U 1 1 6159276C
 P 9600 6000
 F 0 "#PWR0112" H 9600 5750 50  0001 C CNN
@@ -292,7 +290,7 @@ F 3 "" H 9600 6000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:+3.3V #PWR0113
+L Placa_CHIP8-rescue:+3.3V-power #PWR0113
 U 1 1 6159301E
 P 9850 5300
 F 0 "#PWR0113" H 9850 5150 50  0001 C CNN
@@ -303,7 +301,7 @@ F 3 "" H 9850 5300 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR0114
+L Placa_CHIP8-rescue:GND-power #PWR0114
 U 1 1 61593D3E
 P 9850 5500
 F 0 "#PWR0114" H 9850 5250 50  0001 C CNN
@@ -330,7 +328,7 @@ Wire Wire Line
 Wire Wire Line
 	9600 5950 9600 6000
 $Comp
-L power:GND #PWR0115
+L Placa_CHIP8-rescue:GND-power #PWR0115
 U 1 1 615AC362
 P 6100 5650
 F 0 "#PWR0115" H 6100 5400 50  0001 C CNN
@@ -354,7 +352,7 @@ Connection ~ 6100 5450
 Wire Wire Line
 	6100 5650 6100 5450
 $Comp
-L power:+3.3V #PWR0116
+L Placa_CHIP8-rescue:+3.3V-power #PWR0116
 U 1 1 615B6A0C
 P 6100 2000
 F 0 "#PWR0116" H 6100 1850 50  0001 C CNN
@@ -375,7 +373,7 @@ NoConn ~ 5500 3250
 NoConn ~ 5500 2550
 NoConn ~ 11250 5600
 $Comp
-L power:+BATT #PWR0117
+L Placa_CHIP8-rescue:+BATT-power #PWR0117
 U 1 1 615E3802
 P 2850 6500
 F 0 "#PWR0117" H 2850 6350 50  0001 C CNN
@@ -388,7 +386,7 @@ $EndComp
 Wire Wire Line
 	2850 6500 2850 6550
 $Comp
-L power:+BATT #PWR0118
+L Placa_CHIP8-rescue:+BATT-power #PWR0118
 U 1 1 615E9338
 P 5850 2000
 F 0 "#PWR0118" H 5850 1850 50  0001 C CNN
@@ -399,7 +397,7 @@ F 3 "" H 5850 2000 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Placa:Fuente U2
+L Placa_CHIP8-rescue:Fuente-Placa U2
 U 1 1 615EFB9F
 P 9000 5650
 F 0 "U2" H 9058 6175 50  0000 C CNN
@@ -410,7 +408,7 @@ F 3 "" H 9150 5250 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Placa:STM32F103C8Tx U1
+L Placa_CHIP8-rescue:STM32F103C8Tx-Placa U1
 U 1 1 6160BC1E
 P 6200 3850
 F 0 "U1" H 6700 2350 50  0000 C CNN
@@ -421,7 +419,7 @@ F 3 "" H 6200 3850 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:+5V #PWR0119
+L Placa_CHIP8-rescue:+5V-power #PWR0119
 U 1 1 61620457
 P 6300 2000
 F 0 "#PWR0119" H 6300 1850 50  0001 C CNN
@@ -452,7 +450,7 @@ Connection ~ 2850 6550
 Wire Wire Line
 	2850 6550 2850 6650
 $Comp
-L power:PWR_FLAG #FLG0102
+L Placa_CHIP8-rescue:PWR_FLAG-power #FLG0102
 U 1 1 6162B3A1
 P 2500 6900
 F 0 "#FLG0102" H 2500 6975 50  0001 C CNN
@@ -494,7 +492,7 @@ RX_1
 Text Label 7150 4550 2    50   ~ 0
 TX_1
 $Comp
-L Connector:Conn_01x03_Male J4
+L Placa_CHIP8-rescue:Conn_01x03_Male-Connector J4
 U 1 1 615256F9
 P 4650 1100
 F 0 "J4" H 4650 800 50  0000 C CNN
@@ -507,7 +505,7 @@ $EndComp
 Wire Wire Line
 	5250 1200 5250 1300
 $Comp
-L power:GND #PWR0120
+L Placa_CHIP8-rescue:GND-power #PWR0120
 U 1 1 61533673
 P 5250 1300
 F 0 "#PWR0120" H 5250 1050 50  0001 C CNN
@@ -517,16 +515,12 @@ F 3 "" H 5250 1300 50  0001 C CNN
 	1    5250 1300
 	1    0    0    -1  
 $EndComp
-Text Label 5250 1100 2    50   ~ 0
+Text Label 5550 1100 2    50   ~ 0
 TX_1
-Wire Wire Line
-	4850 1100 5250 1100
-Wire Wire Line
-	4850 1000 5250 1000
 Wire Wire Line
 	4850 1200 5250 1200
 $Comp
-L Connector:Conn_01x20_Female J3
+L Placa_CHIP8-rescue:Conn_01x20_Female-Connector J3
 U 1 1 6152DDD6
 P 9500 3500
 F 0 "J3" H 9550 2600 50  0000 L CNN
@@ -537,7 +531,7 @@ F 3 "~" H 9500 3500 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:GND #PWR0106
+L Placa_CHIP8-rescue:GND-power #PWR0106
 U 1 1 615368BB
 P 8800 2750
 F 0 "#PWR0106" H 8800 2500 50  0001 C CNN
@@ -548,7 +542,7 @@ F 3 "" H 8800 2750 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:+5V #PWR0107
+L Placa_CHIP8-rescue:+5V-power #PWR0107
 U 1 1 6153D9CC
 P 8800 2500
 F 0 "#PWR0107" H 8800 2350 50  0001 C CNN
@@ -575,7 +569,7 @@ Wire Wire Line
 Wire Wire Line
 	8800 2500 8800 2600
 $Comp
-L Connector:Conn_01x06_Female J2
+L Placa_CHIP8-rescue:Conn_01x06_Female-Connector J2
 U 1 1 6150C5A6
 P 3100 2750
 F 0 "J2" H 3050 3150 50  0000 L CNN
@@ -585,14 +579,14 @@ F 3 "~" H 3100 2750 50  0001 C CNN
 	1    3100 2750
 	1    0    0    -1  
 $EndComp
-Text Label 5250 1000 2    50   ~ 0
+Text Label 5550 1000 2    50   ~ 0
 RX_1
 Wire Wire Line
 	5850 2000 5850 2250
 Wire Wire Line
 	2500 6500 2500 6550
 $Comp
-L power:PWR_FLAG #FLG0101
+L Placa_CHIP8-rescue:PWR_FLAG-power #FLG0101
 U 1 1 61628B00
 P 2500 6500
 F 0 "#FLG0101" H 2500 6575 50  0001 C CNN
@@ -657,7 +651,7 @@ LCD_MOSI
 Text Label 8950 3100 0    50   ~ 0
 LCD_CLK
 $Comp
-L Device:Jumper JP1
+L Placa_CHIP8-rescue:Jumper-Device JP1
 U 1 1 617816B8
 P 1600 4550
 F 0 "JP1" H 1600 4814 50  0000 C CNN
@@ -667,4 +661,22 @@ F 3 "~" H 1600 4550 50  0001 C CNN
 	1    1600 4550
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	4850 1000 5200 1000
+Wire Wire Line
+	5200 1000 5200 1100
+Wire Wire Line
+	5200 1100 5550 1100
+Wire Wire Line
+	2200 4550 1900 4550
+Wire Wire Line
+	4850 1100 5100 1100
+Wire Wire Line
+	5100 1100 5100 1050
+Wire Wire Line
+	5100 1050 5300 1050
+Wire Wire Line
+	5300 1050 5300 1000
+Wire Wire Line
+	5300 1000 5550 1000
 $EndSCHEMATC
