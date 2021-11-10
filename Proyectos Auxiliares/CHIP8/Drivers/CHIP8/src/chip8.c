@@ -70,47 +70,42 @@ void load_rom(Chip8 *chip8) {
 */
 void init_system(Chip8 *chip8) {
 
-    /*chip8->is_running_flag = TRUE;
-    chip8->draw_screen_flag = FALSE;
-    chip8->is_paused_flag = FALSE;*/
-
     chip8->pc_reg = PC_START;
     chip8->current_op = 0;
     chip8->sp_reg = 0;
     chip8->I_reg = 0;
 
-    // Clear display (memory)
+
     for (int i = 0; i < SCREEN_HEIGHT; i++) {
         for (int j = 0; j < SCREEN_WIDTH; j++) {
             chip8->screen[i][j] = 0;
         }
     }
 
-    // Clear stack
+
     for (int i = 0; i < STACK_SIZE; i++) {
         chip8->stack[i] = 0;
     }
 
-    // Clear ram
+
     for (int i = 0; i < TOTAL_RAM; i++) {
         chip8->ram[i] = 0;
     }
 
-    // Clear registers
+
     for (int i = 0; i < NUM_V_REGISTERS; i++) {
         chip8->V[i] = 0;
     }
 
-    // Load fontset into memory
+
     for(int i = 0; i < FONTSET_SIZE; i++) {
         chip8->ram[i] = FONTSET[i];
     }
 
-    // Set timers to 0
     chip8->delay_timer = 0;
     chip8->sound_timer = 0;
     base_de_tiempo_timer = 0;
-    // Keyboard setup
+
     for (int i = 0; i < NUM_KEYS; i++) {
         chip8->keyboard[i] = FALSE;
     }

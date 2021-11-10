@@ -46,32 +46,24 @@ const static uint8_t FONTSET[FONTSET_SIZE] = {
 
 
 struct Chip8_t {
-    uint8_t ram[TOTAL_RAM];          // 4k of memory
-    uint16_t stack[STACK_SIZE];      // stack, stores up to 16 levels
-
-    // registers 
-    uint8_t V[NUM_V_REGISTERS];      // general purpose registers (0 - 14) and the carry flag register (15)
-    uint16_t I_reg;                  // index register
-    uint16_t pc_reg;                 // pc register
-    uint16_t sp_reg;                 // stack pointer register
-
-    // timers
+    /*MEMORIA*/
+		uint8_t ram[TOTAL_RAM];          // 4k  memoria
+    uint16_t stack[STACK_SIZE];      // stack
+    /*REGISTROS*/
+    uint8_t V[NUM_V_REGISTERS];      // registros general purpose
+    uint16_t I_reg;                  // registro indice
+    uint16_t pc_reg;                 // program counter
+    uint16_t sp_reg;                 // stack pointer
+    /*TIMERS*/
     uint8_t delay_timer;
     uint8_t sound_timer;
-
-    uint16_t current_op;             // current opcode being executed by the system
-
-    // screen
+    /*OPCODE ACTUAL*/
+    uint16_t current_op;
+    /*PANTALLA*/
     uint8_t screen[SCREEN_HEIGHT][SCREEN_WIDTH];
-
-    // keys (16)
+    /*TECLADO*/
     uint8_t keyboard[NUM_KEYS];
     uint8_t was_key_pressed;
-/*
-    // Status flags for the emulator
-    uint8_t is_running_flag;
-    uint8_t draw_screen_flag;
-    uint8_t is_paused_flag;*/
 };
 
 #endif // CHIP8_T_H

@@ -376,7 +376,6 @@ void drw(Chip8 *chip8) {
         }
     }
     ST7920_Update();
-    //chip8->draw_screen_flag = TRUE;
     chip8->pc_reg += 2;
 }
 
