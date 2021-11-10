@@ -183,13 +183,22 @@ void PendSV_Handler(void)
   */
 void SysTick_Handler(void)
 {
-  /* USER CODE BEGIN SysTick_IRQn 0 */
+	/* USER CODE BEGIN SysTick_IRQn 0 */
+		disk_timerproc();
+		DriverTeclado();
 
-  /* USER CODE END SysTick_IRQn 0 */
-  HAL_IncTick();
-  /* USER CODE BEGIN SysTick_IRQn 1 */
+		if (base_de_tiempo_timer > 1){
+			base_de_tiempo_timer=0;
+			update_timers(&user_chip8); // Actualizo timers
+		}
+		else
+			base_de_tiempo_timer++;
 
-  /* USER CODE END SysTick_IRQn 1 */
+	 pase_por_systick=1;
+	  /* USER CODE END SysTick_IRQn 0 */
+	  HAL_IncTick();
+	  /* USER CODE BEGIN SysTick_IRQn 1 */
+
 }
 
 /******************************************************************************/

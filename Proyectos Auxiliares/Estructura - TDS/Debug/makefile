@@ -9,7 +9,11 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include Drivers/TECLADO_MATRICIAL/src/subdir.mk
 -include Drivers/STM32F1xx_HAL_Driver/Src/subdir.mk
+-include Drivers/LCD_GRAFICO/Src/subdir.mk
+-include Drivers/FATFS/src/subdir.mk
+-include Drivers/CHIP8/src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk
 -include subdir.mk

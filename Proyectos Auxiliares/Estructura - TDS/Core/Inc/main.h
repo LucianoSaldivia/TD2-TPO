@@ -32,7 +32,15 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "chip8.h"
+#include "chip8_t.h"
+#include "teclado.h"
+#include "delay.h"
+#include "ST7920_SERIAL.h"
+#include "buzzer.h"
+#include "screen.h"
+#include "ff.h"
+#include "diskio.h"
 /* USER CODE END Includes */
 
 /* Exported types ------------------------------------------------------------*/
@@ -47,19 +55,29 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-
+Chip8 user_chip8;
+volatile uint8_t buffKey;
+volatile uint8_t base_de_tiempo_timer;
+uint8_t pase_por_systick;
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
+typedef struct dummy_parameters {
+	Chip8 * user_chip8_under_test;
+	int logging ;
+} dummy_parameters;
 
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define BUZZER_Pin GPIO_PIN_12
+#define BUZZER_GPIO_Port GPIOA
 /* USER CODE BEGIN Private defines */
-
+#define BUZZER_Pin GPIO_PIN_12
+#define BUZZER_GPIO_Port GPIOA
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

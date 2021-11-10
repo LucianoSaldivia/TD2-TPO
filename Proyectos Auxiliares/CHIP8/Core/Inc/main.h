@@ -33,7 +33,7 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "chip8.h"
-#include "chip8_t.h"
+
 #include "teclado.h"
 #include "delay.h"
 #include "ST7920_SERIAL.h"
