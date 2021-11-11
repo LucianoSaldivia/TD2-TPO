@@ -387,22 +387,15 @@ void execute_instruction( void *dps) {
 }
 
 
-/* 
-* Gets user input and updates the keyboard key status based on what keys 
-* were or were not pressed.
-*
-* Also checks for key presses that have other functionality in the emulator
-*   ESC: Exit Emulator
-*   Spacebar: Pause Emulator
-*   F5: Reset Emulator
-*/
+
 void process_user_input(void * dp) {
 	Chip8 *chip8 = (Chip8*)dp;
 	uint8_t tecla;
 	DriverTeclado();
 	tecla=Teclado();
+
 	//Si la tecla presionada coincide con la que tengo en el array le pongo TRUE sino FALSE
-	for (int i = 0; i < NUM_KEYS; i++) {
+	for ( uint8_t i = 0; i < NUM_KEYS; i++) {
 		if (tecla== KEYMAP[i])
 			chip8->keyboard[i] = TRUE;
 		else

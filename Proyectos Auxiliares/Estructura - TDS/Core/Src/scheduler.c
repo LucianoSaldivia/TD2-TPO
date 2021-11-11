@@ -94,11 +94,11 @@ void run(Scheduler *s){
 
 	uint32_t i;
 	uint8_t fail = 0;
-
+	Task tarea_actual;
 	for( i = 0; i < s->len_tasks_list; i++ ){
 
 		s->tasks_list[i].periods_left --;
-
+		tarea_actual = s->tasks_list[i];
 		// Si debe ejecutarse en este período
 		if( s->tasks_list[i].periods_left == 0 ){
 			s->tasks_list[i].periods_left = s->tasks_list[i].period;

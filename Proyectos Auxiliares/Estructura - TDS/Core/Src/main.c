@@ -35,8 +35,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define CICLO_SECUNDARIO_MS		(10)
-#define LEN_TASK_LIST			(3)
+#define CICLO_SECUNDARIO_MS		(1)
+#define LEN_TASK_LIST			(5)
 #define PULSADOR_ACTIVO_BAJO	(1)
 #define PULSADOR_TICS			(20)
 #define PULSADOR_PUERTO			(GPIOB)
@@ -111,9 +111,6 @@ int main(void)
 	uint32_t ticks = 0;
 	dummy_parameters dummy_params;
 	dummy_params.user_chip8_under_test =  &user_chip8;
-	//dummy_params.a = 4;
-//	dummy_params.b = 5;
-
 
   /* USER CODE END 1 */
 
@@ -144,7 +141,7 @@ int main(void)
 
   initScheduler( &scheduler, LEN_TASK_LIST);
 
-	scheduler.addTask( &scheduler, process_user_input,  &(dummy_params.user_chip8_under_test),0, 1, 0, _DEFAULT_SCHEDULER_WCET_ );
+	scheduler.addTask( &scheduler, process_user_input,  (dummy_params.user_chip8_under_test) ,0, 1, 0, _DEFAULT_SCHEDULER_WCET_ );
 	scheduler.addTask( &scheduler, execute_instruction, &dummy_params,                        0, 1, 0, _DEFAULT_SCHEDULER_WCET_ );
 	scheduler.addTask( &scheduler, actualizar_buzzer,   NULL,                                 0, 5, 0, _DEFAULT_SCHEDULER_WCET_ );
 
