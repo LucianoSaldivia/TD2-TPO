@@ -58,16 +58,7 @@ static void MX_SPI2_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
-void fallo (void){
 
-
-
-
-}
-uint8_t mi_rand(void){
-
-
-}
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 /* USER CODE END 0 */
@@ -104,7 +95,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   init_graphics();
   init_system(&user_chip8);
-	load_rom(&user_chip8);
+  load_rom(&user_chip8);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -112,9 +103,9 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-			 process_user_input (&user_chip8);  				// Leo las entradas
-			 exec_instruction(&user_chip8); // Ejecuto las instrucciones
-			 actualizar_buzzer();
+	 process_user_input (&user_chip8);  // Leo las entradas
+	 exec_instruction(&user_chip8); 	// Ejecuto las instrucciones
+	 actualizar_buzzer();
   }
   /* USER CODE END 3 */
 }

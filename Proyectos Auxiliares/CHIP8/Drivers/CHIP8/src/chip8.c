@@ -2,7 +2,19 @@
 #include "main.h"
 
 volatile extern uint8_t base_de_tiempo_timer;
-
+void fallo (uint8_t codigo_falla){
+	char codigo = codigo_falla + '0';
+	ST7920_Clear();
+	ST7920_SendString(0, 0, "CODIGO FALLA");
+	ST7920_SendString(2, 2,&codigo);
+}
+uint8_t mi_rand(void){
+	uint8_t seed = 7;
+	seed ^= seed << 13;
+	seed ^= seed >> 17;
+	seed ^= seed << 5;
+	return seed;
+}
 void load_rom(Chip8 *chip8) {
     long rom_length;
   	FIL fp;
@@ -11,11 +23,11 @@ void load_rom(Chip8 *chip8) {
   	UINT datos_leidos;
   	DIR dp;
   	static FILINFO fno;
-  	uint8_t tecla;
+  	uint8_t tecla,teclas,flag;
 
   	f_mount(&fs, "", 0);
   	res = f_opendir(&dp, "/");
-
+  	pase_por_systick = 0;
     if (res == FR_OK) {
     	f_readdir(&dp, &fno); //Leo el directorio
 			ST7920_SendString(0, 0, fno.fname);
@@ -23,18 +35,25 @@ void load_rom(Chip8 *chip8) {
 
     		if(fno.fname[0] == 0)
     			f_rewinddir(&dp);
-    		if (pase_por_systick){
-    			tecla=Teclado();
-    			pase_por_systick = 0;
+    		//if (pase_por_systick&&(buffKey == NO_KEY)){
+    		if (flag){
+    			teclas = Teclado();
+    			flag = 0;
+    		}
+    		tecla = Teclado();
+    		if (tecla == NO_KEY)
+    			flag = 1;
+    		/*	pase_por_systick=0;
     		}
     		else
-    			buffKey = NO_KEY; // Ya lei y reseteo el buffer sino corre mas rapido el core que el systick
-    		switch(tecla){
+    			buffKey = NO_KEY;*/
+
+    		switch(teclas){
 					case 2:
 						ST7920_Clear();
 						f_readdir(&dp, &fno); //Leo el directorio
 						ST7920_SendString(0, 0, fno.fname);
-						buffKey = NO_KEY;
+
 					break;
 					case 5:
 						res = f_open(&fp, fno.fname, FA_READ);
@@ -56,7 +75,6 @@ void load_rom(Chip8 *chip8) {
 					break;
 					case 8:
 						f_rewinddir(&dp);
-						buffKey = NO_KEY; // Ya lei y reseteo el buffer sino corre mas rapido el core que el systick
 					break;
     		}
     	}
@@ -133,7 +151,7 @@ void exec_instruction(Chip8 *chip8) {
 							volver_subroutina(chip8);
 							break;
 						default:
-							fallo();
+							fallo(1);
 					}
 					break;
         case 0x1000:
@@ -187,7 +205,7 @@ void exec_instruction(Chip8 *chip8) {
 								shl(chip8);
 								break;
 						default:
-								fallo();
+								fallo(2);
 					}
 					break;
         case 0x9000:
@@ -215,7 +233,7 @@ void exec_instruction(Chip8 *chip8) {
 									sknp(chip8);
 									break;
 							default:
-									fallo();
+									fallo(3);
 					 }
 					 break;
 
@@ -250,11 +268,11 @@ void exec_instruction(Chip8 *chip8) {
 							ld_V_regs(chip8);
 							break;
 						default:
-							fallo();
+							fallo(4);
 					}
 					break;
         default:
-            fallo();
+            fallo(5);
     }
 }
 

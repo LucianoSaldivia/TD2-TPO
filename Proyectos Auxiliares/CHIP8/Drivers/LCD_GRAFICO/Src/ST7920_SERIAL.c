@@ -1,21 +1,9 @@
-/*
- * ST7920_SERIAL.c
- *
- *  Created on: 07-Jun-2019
- *      Author: poe
- */
+
 #include "main.h"
-//#include "stm32f1xx_hal.h"
 #include "ST7920_SERIAL.h"
 #include "delay.h"
 
-/* setup below is as follows
- * A0 ---------> SCLK (EN)
- * A1 ---------> CS (RS)
- * A2 ---------> SID (RW)
- * B3 ---------> RST (RST)
- *
- */
+
 
 #define SCLK_PIN GPIO_PIN_0
 #define SCLK_PORT GPIOA
@@ -36,12 +24,11 @@ static GPIO_TypeDef *gpio_cs;
 static uint16_t pin_cs;
 
 
-// A replacement for SPI_TRANSMIT
+
 
 void SendByteSPI(uint8_t byte)
 {
 	HAL_SPI_Transmit(spi_handler, (void*) &byte, 1, 10);
-
 }
 
 

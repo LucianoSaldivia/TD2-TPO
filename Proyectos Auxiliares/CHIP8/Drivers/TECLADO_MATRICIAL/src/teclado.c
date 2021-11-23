@@ -38,6 +38,7 @@ void TecladoSW (uint8_t codAct){
    { //mientras NO se oprima tecla SIEMPRE
       codAnt = NO_KEY;	//entraré acá
       estado = REPOSO;
+
       return;
    }
 

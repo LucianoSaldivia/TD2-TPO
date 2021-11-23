@@ -175,7 +175,7 @@ void xor_Vx_Vy(Chip8 *chip8) {
 /*
 * Opcode 8XY4: ADD Vx, Vy
 * V[X]= V[X] + V[Y] stored in
-* si sum > 255, V[F] register (carry) is set to 1, else 0
+* if sum > 255, V[F] register (carry) i = 1, else 0
 * V[X] =  LSB (sum)
 */
 void add_Vx_Vy(Chip8 *chip8) {
@@ -198,7 +198,7 @@ void add_Vx_Vy(Chip8 *chip8) {
 /*
 * Opcode 8XY5: SUB Vx, Vy
 * V[X]= V[X] - V[Y] stored in
-* If V[X] > V[Y], V[F] register (borrow) en 1,  sino 0
+* If V[X] > V[Y], V[F] registro (borrow) en 1,  sino 0
 */
 void sub_Vx_Vy(Chip8 *chip8) {
     uint8_t target_v_reg_x = (chip8->current_op & 0x0F00) >> 8;
@@ -224,7 +224,7 @@ void sub_Vx_Vy(Chip8 *chip8) {
 void shr(Chip8 *chip8) {
     uint8_t target_v_reg_x = (chip8->current_op & 0x0F00) >> 8;
 
-    // check if the LSb is 1 (odd num in V[X] will have a LSB of 1) 
+
     if (chip8->V[target_v_reg_x] % 2 == 1) {
         chip8->V[0xF] = 1;
     }
@@ -239,8 +239,8 @@ void shr(Chip8 *chip8) {
 //PABLO_PUTO.COM
 /*
 * Opcode 8XY7: SUBN Vx, Vy
-* V[Y] - V[X] stored in V[X]
-* If V[Y] > V[X], V[F] register (borrow) is set to 1, else 0 (NOT borrow essentially)
+* V[X]=V[Y] - V[X]
+* If V[Y] > V[X], V[F] registro (borrow) = 1, else 0
 */
 void subn_Vx_Vy(Chip8 *chip8) {
     uint8_t target_v_reg_x = (chip8->current_op & 0x0F00) >> 8;
@@ -261,7 +261,7 @@ void subn_Vx_Vy(Chip8 *chip8) {
 /*
 * Opcode 8XY6: SHL Vx
 * V[X] = V[X] << 1
-* If MSb of V[X] == 1, V[F] register is set to 1, else 0
+* If MSb of V[X] == 1, V[F] = 1, else 0
 */
 void shl(Chip8 *chip8) {
     uint8_t target_v_reg_x = (chip8->current_op & 0x0F00) >> 8;
@@ -280,8 +280,8 @@ void shl(Chip8 *chip8) {
 
 
 /*
-* Opcode 9XY0: Skip next instruction
-* Increments the pc_reg by 4 (2 instructions) if  V[X] != V[Y]
+* Opcode 9XY0: Salta instruccion
+* Incremento el pc_reg en 4 (2 instructiones) if  V[X] != V[Y]
 */
 void sne_Vx_Vy(Chip8 *chip8) {
     uint8_t target_v_reg = (chip8->current_op & 0x0F00) >> 8;
@@ -297,8 +297,8 @@ void sne_Vx_Vy(Chip8 *chip8) {
 
 
 /*
-* Opcode ANNN: Load I immediate
-* Sets the Index register to the value of NNN
+* Opcode ANNN:
+* Cargo el  Index register con un valor
 */
 void ldi(Chip8 *chip8) {
     uint16_t nnn = chip8->current_op & 0x0FFF;
@@ -310,7 +310,6 @@ void ldi(Chip8 *chip8) {
 
 /*
 * Opcode BNNN: Jump + V[0]
-* set pc_register to NNN + V[0]
 */
 void jump_V0(Chip8 *chip8) {
     uint16_t nnn = chip8->current_op & 0x0FFF;
@@ -321,7 +320,7 @@ void jump_V0(Chip8 *chip8) {
 
 /*
 * Opcode CXKK: Random
-* Generate Random Num between 0 - 255 then bitwise AND with value KK.
+* Random Num between 0 - 255
 * Store the result in V[X]
 */
 //TODO:AAAA
@@ -337,10 +336,7 @@ void rnd(Chip8 *chip8) {
 
 /*
 * Opcode DXYN: Display N-byte sprite at ram[I_reg]
-* Draws sprite at location V[X], V[Y]. Set V[F] if collision
-*
-* Initial source of implimentation used as template found below:
-* http://www.multigesture.net/articles/how-to-write-an-emulator-chip-8-interpreter/
+* Dibujo sprite en la posicion V[X], V[Y].
 */
 void drw(Chip8 *chip8) {
     uint8_t target_v_reg_x = (chip8->current_op & 0x0F00) >> 8;
@@ -350,7 +346,7 @@ void drw(Chip8 *chip8) {
     uint8_t y_location = chip8->V[target_v_reg_y];
     uint8_t pixel;
 
-    // Reset collision register to FALSE
+
     chip8->V[0xF] = FALSE;
     for (int y_coordinate = 0; y_coordinate < sprite_height; y_coordinate++) {
         pixel = chip8->ram[chip8->I_reg + y_coordinate];
@@ -374,8 +370,7 @@ void drw(Chip8 *chip8) {
 
 
 /*
-* Opcode EX9E: Skip next instruction if key pressed
-* Skips the next instruction if the key with value V[X] is pressed
+* Opcode EX9E:Salta la proxima instruccion si una tecla fue presionada con el valor V[X]
 */
 void skp(Chip8 *chip8) {
     uint8_t target_v_reg = (chip8->current_op & 0x0F00) >> 8;
@@ -391,8 +386,7 @@ void skp(Chip8 *chip8) {
 
 
 /*
-* Opcode EXA1: Skip next instruction if key not pressed
-* Skips the next instruction if the key with value V[X] is not pressed
+* Opcode EXA1: Salta la proxima instruccion si una tecla  NO fue presionada con el valor V[X]
 */
 void sknp(Chip8 *chip8) {
     uint8_t target_v_reg = (chip8->current_op & 0x0F00) >> 8;
@@ -409,7 +403,7 @@ void sknp(Chip8 *chip8) {
 
 /*
 * Opcode FX07: Load Vx, DT
-* V[X] set to value in delay_timer
+* V[X] = delay_timer
 */
 void ld_Vx_dt(Chip8 *chip8) {
     uint8_t target_v_reg = (chip8->current_op & 0x0F00) >> 8;
@@ -421,7 +415,7 @@ void ld_Vx_dt(Chip8 *chip8) {
 
 /*
 * Opcode FX0A: Load Vx, K
-* Waits for a key press
+* Espero a que apreten una tecla
 * V[X] set to value of key (K) pressed
 */
 void ld_Vx_k(Chip8 *chip8) {
@@ -446,7 +440,7 @@ void ld_Vx_k(Chip8 *chip8) {
 
 /*
 * Opcode FX15: Load DT, Vx
-* delay_timer set to value V[X]
+* delay_timer =  V[X]
 */
 void ld_dt_Vx(Chip8 *chip8) {
     uint8_t target_v_reg = (chip8->current_op & 0x0F00) >> 8;
@@ -458,7 +452,7 @@ void ld_dt_Vx(Chip8 *chip8) {
 
 /*
 * Opcode FX18: Load ST, Vx
-* sound_timer set to value V[X]
+* sound_timer = V[X]
 */
 void ld_st_Vx(Chip8 *chip8) {
     uint8_t target_v_reg = (chip8->current_op & 0x0F00) >> 8;
@@ -469,8 +463,8 @@ void ld_st_Vx(Chip8 *chip8) {
 
 
 /*
-* Opcode FX1E: Add I, VX
-* Adds current I_reg and V[X], result stored in I_reg
+* Opcode FX1E:
+* I_reg=I_reg + V[X]
 */
 void add_i_Vx(Chip8 *chip8) {
     uint8_t target_v_reg = (chip8->current_op & 0x0F00) >> 8;
@@ -482,7 +476,7 @@ void add_i_Vx(Chip8 *chip8) {
 
 /*
 * Opcode FX29: LD F, VX
-* I_reg set to value of location of hex sprite value in V[X] * 5
+* I_reg = V[X] * 5
 */
 void ld_F_Vx(Chip8 *chip8) {
     uint8_t target_v_reg = (chip8->current_op & 0x0F00) >> 8;
@@ -493,11 +487,10 @@ void ld_F_Vx(Chip8 *chip8) {
 
 
 /*
-* Opcode FX33: LD B, VX
-* Store the Binary Coded Decimal representation of V[X]
-* at memory location I (hundreds place) I+1 (tens place) and I+2 (ones place)
-* 
-* Used this for page for a hint on this op implementation:
+* Opcode FX33:
+* Reprensento en BCD a V[X]
+*  I (centenas) I+1 (decenas) y I+2 (unidades)
+	VER REFERENCIA
 * http://www.multigesture.net/articles/how-to-write-an-emulator-chip-8-interpreter/
 */
 void st_bcd_Vx(Chip8 *chip8) {
@@ -511,8 +504,8 @@ void st_bcd_Vx(Chip8 *chip8) {
 
 
 /*
-* Opcode FX55: LD [I], Vx
-* Store V[0] - V[X] in memory starting at I_reg value
+* Opcode FX55:
+* I_reg = V[0] - V[X]
 */
 void st_V_regs(Chip8 *chip8) {
     uint8_t end_ld_v_reg = (chip8->current_op & 0x0F00) >> 8;
@@ -529,8 +522,8 @@ void st_V_regs(Chip8 *chip8) {
 
 
 /*
-* Opcode FX65: LD Vx, I
-* Read values into V[0] - V[X] from memory starting at I_reg value
+* Opcode FX65:
+* Guardo los valores de la memoria RAM en el registro V
 */
 void ld_V_regs(Chip8 *chip8) {
     uint8_t end_ld_v_reg = (chip8->current_op & 0x0F00) >> 8;
@@ -539,7 +532,6 @@ void ld_V_regs(Chip8 *chip8) {
         chip8->V[i] = chip8->ram[chip8->I_reg + i];
     }
 
-    // TODO: Does I_reg need to change?
     chip8->I_reg += (end_ld_v_reg + 1);
 
     chip8->pc_reg += 2;

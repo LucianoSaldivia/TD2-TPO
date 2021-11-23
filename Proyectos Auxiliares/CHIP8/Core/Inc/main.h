@@ -61,14 +61,14 @@ TIM_HandleTypeDef htim4;
 Chip8 user_chip8;
 volatile uint8_t buffKey;
 volatile uint8_t base_de_tiempo_timer;
-uint8_t pase_por_systick;
+uint8_t pase_por_systick ;
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-void fallo (void);
+void fallo (uint8_t codigo_falla);
 uint8_t mi_rand(void);
 /* USER CODE END EFP */
 

@@ -28,6 +28,8 @@ uint8_t rom_buffer [4096];//buffer donde se va copiar la ROM de la SD
 
 void load_rom(Chip8 *chip8);
 void init_system(Chip8 *chip8);
+void fallo (uint8_t codigo_falla);
+uint8_t mi_rand(void);
 
 uint16_t fetch_opcode(Chip8 *chip8);
 void exec_instruction(Chip8 *chip8);

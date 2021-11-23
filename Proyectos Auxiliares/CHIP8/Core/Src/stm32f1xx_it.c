@@ -194,7 +194,7 @@ void SysTick_Handler(void)
 	else
 		base_de_tiempo_timer++;
 
- pase_por_systick=1;
+ pase_por_systick=!pase_por_systick;
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
