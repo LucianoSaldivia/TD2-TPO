@@ -33,7 +33,7 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "chip8.h"
-
+#include "chip8_t.h"
 #include "teclado.h"
 #include "delay.h"
 #include "ST7920_SERIAL.h"
@@ -68,12 +68,15 @@ uint8_t pase_por_systick;
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+void fallo (void);
+uint8_t mi_rand(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
 #define BUZZER_Pin GPIO_PIN_12
 #define BUZZER_GPIO_Port GPIOA
+
+#define FALLO
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */

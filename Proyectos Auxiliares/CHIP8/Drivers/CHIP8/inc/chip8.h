@@ -4,8 +4,7 @@
 #include "instructions.h"
 
 
-// Keymap for the emulator. Comments are the orignal
-// key on the hex keypad
+//Mapeo del teclado
 const static uint8_t KEYMAP[NUM_KEYS] = {
     0, // 0
     1, // 1
@@ -25,20 +24,15 @@ const static uint8_t KEYMAP[NUM_KEYS] = {
     15  // F
 };
 
-uint8_t rom_buffer [4096];
+uint8_t rom_buffer [4096];//buffer donde se va copiar la ROM de la SD
 
 void load_rom(Chip8 *chip8);
 void init_system(Chip8 *chip8);
-void reset_system(Chip8 *chip8);
+
 uint16_t fetch_opcode(Chip8 *chip8);
-void execute_instruction(Chip8 *chip8, int logging);
+void exec_instruction(Chip8 *chip8);
 void process_user_input(Chip8 *chip8);
 void update_timers(Chip8 *chip8);
-
-// Debugging functions
-void print_regs(Chip8 *chip8);
-void print_stack(Chip8 *chip8);
-void print_keyboard(Chip8 *chip8);
 
 
 #endif // CHIP8_H

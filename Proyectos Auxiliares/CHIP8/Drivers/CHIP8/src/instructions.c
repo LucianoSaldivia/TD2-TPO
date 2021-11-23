@@ -1,35 +1,31 @@
 #include "instructions.h"
 #include "screen.h"
-/*
-* Opcode 00E0: Clear the display
-* Display (memory) is cleared
-*/
+
+//Opcode 00E0: Limpio pantalla
 void cls(Chip8 *chip8) {
     for (int i = 0; i < SCREEN_HEIGHT; i++) {
         for (int j = 0; j < SCREEN_WIDTH; j++) {
             chip8->screen[i][j] = 0;
         }
     }
-  //  chip8->draw_screen_flag = TRUE;
+
     chip8->pc_reg += 2;
 }
 
 
 /*
-* Opcode 00EE: Return from subroutine
-* pc_reg popped from top of stack, sp_reg decremented
+* Opcode 00EE: Vuelvo de una subrutina
+* hago unstacking, sp_reg decrementado
 */
-void return_from_subroutine(Chip8 *chip8) {
+void volver_subroutina(Chip8 *chip8) {
     chip8->sp_reg--;
     chip8->pc_reg = chip8->stack[chip8->sp_reg];
     chip8->pc_reg += 2;
 }
 
 
-/*
-* Opcode 1NNN: Jump to address NNN
-* pc_reg set to nnn
-*/
+//Opcode 1NNN: salto a la dir NNN
+
 void jump(Chip8 *chip8) {
     uint16_t nnn = chip8->current_op & 0x0FFF;
 
@@ -38,10 +34,10 @@ void jump(Chip8 *chip8) {
 
 
 /*
-* Opcode 2NNN: Call Subroutine at NNN
-* sp_reg incremented, pc_reg pushed to stack, pc_reg set to NNN
+* Opcode 2NNN: Call Subroutina en  NNN
+* sp_reg incrementedo, pc_reg pushedeado al stack, pc_reg seteado a NNN
 */
-void call_subroutine(Chip8 *chip8) {
+void call_subroutina(Chip8 *chip8) {
     uint16_t nnn = chip8->current_op & 0x0FFF;
 
     chip8->stack[chip8->sp_reg] = chip8->pc_reg;
@@ -51,8 +47,8 @@ void call_subroutine(Chip8 *chip8) {
 
 
 /*
-* Opcode 3XKK: Skip next instruction
-* Increments the pc_reg by 4 (2 instructions) if  V[x] == KK
+* Opcode 3XKK: Salto a proxima instruccion
+* Incremento el pc_reg en 4 (2 instructiones) si  V[x] == KK
 */
 void se_Vx_kk(Chip8 *chip8) {
     uint8_t target_v_reg = (chip8->current_op & 0x0F00) >> 8;
@@ -68,8 +64,8 @@ void se_Vx_kk(Chip8 *chip8) {
 
 
 /*
-* Opcode 4XKK: Skip next instruction
-* Increments the pc_reg by 4 (2 instructions) if  V[x] != KK
+* Opcode 4XKK: Salto a la proxima instruccion
+* Incremento el pc_reg en 4 (2 instructionss) si   V[x] != KK
 */
 void sne_Vx_kk(Chip8 *chip8) {
     uint8_t target_v_reg = (chip8->current_op & 0x0F00) >> 8;
@@ -85,8 +81,8 @@ void sne_Vx_kk(Chip8 *chip8) {
 
 
 /*
-* Opcode 5XY0: Skip next instruction
-* Increments the pc_reg by 4 (2 instructions) if  V[x] == V[Y]
+* Opcode 5XY0: Salto a la proxima instruccion
+* Incremento el pc_reg en 4 (2 instructioness) si  V[x] == V[Y]
 */
 void se_Vx_Vy(Chip8 *chip8) {
     uint8_t target_v_reg_x = (chip8->current_op & 0x0F00) >> 8;
@@ -102,8 +98,8 @@ void se_Vx_Vy(Chip8 *chip8) {
 
 
 /*
-* Opcode 6XKK: Load Register Vx immediate
-* Sets the V[X] register to byte KK
+* Opcode 6XKK: Cargo el inmediato Vx
+* Seteo el valor kk    en el registro V [X]
 */
 void ld_Vx(Chip8 *chip8) {
     uint8_t target_v_reg = (chip8->current_op & 0x0F00) >> 8;
@@ -115,8 +111,7 @@ void ld_Vx(Chip8 *chip8) {
 
 
 /*
-* Opcode 7XKK: ADD Register Vx immediate
-* Sets the V[X] register to V[X] + byte KK
+* Opcode 7XKK: Hace VX = VX + KK
 */
 void add_Vx_imm(Chip8 *chip8) {
     uint8_t target_v_reg = (chip8->current_op & 0x0F00) >> 8;
@@ -130,7 +125,7 @@ void add_Vx_imm(Chip8 *chip8) {
 
 /*
 * Opcode 8XY0: Load Vx, Vy
-* Sets register V[X] to register V[Y]
+	Hace VX = VY. Almacena el valor del registro VY en el registro VX
 */
 void move_Vx_Vy(Chip8 *chip8) {
     uint8_t target_v_reg_x = (chip8->current_op & 0x0F00) >> 8;
@@ -142,8 +137,7 @@ void move_Vx_Vy(Chip8 *chip8) {
 
 
 /*
-* Opcode 8XY1: OR Vx, Vy
-* V[X] | V[Y] result stored in V[X]
+ * 	Opcode 8XY1: OR Vx, Vy
 */
 void or_Vx_Vy(Chip8 *chip8) {
     uint8_t target_v_reg_x = (chip8->current_op & 0x0F00) >> 8;
@@ -156,7 +150,6 @@ void or_Vx_Vy(Chip8 *chip8) {
 
 /*
 * Opcode 8XY2: AND Vx, Vy
-* V[X] & V[Y] result stored in V[X]
 */
 void and_Vx_Vy(Chip8 *chip8) {
     uint8_t target_v_reg_x = (chip8->current_op & 0x0F00) >> 8;
@@ -169,7 +162,6 @@ void and_Vx_Vy(Chip8 *chip8) {
 
 /*
 * Opcode 8XY3: XOR Vx, Vy
-* V[X] ^ V[Y] result stored in V[X]
 */
 void xor_Vx_Vy(Chip8 *chip8) {
     uint8_t target_v_reg_x = (chip8->current_op & 0x0F00) >> 8;
@@ -182,9 +174,9 @@ void xor_Vx_Vy(Chip8 *chip8) {
 
 /*
 * Opcode 8XY4: ADD Vx, Vy
-* V[X] + V[Y] stored in V[X]
-* If the sum is over 255, V[F] register (carry) is set to 1, else 0
-* Only the bottom 8 bits of the sum are stored in the V[X] register
+* V[X]= V[X] + V[Y] stored in
+* si sum > 255, V[F] register (carry) is set to 1, else 0
+* V[X] =  LSB (sum)
 */
 void add_Vx_Vy(Chip8 *chip8) {
     uint8_t target_v_reg_x = (chip8->current_op & 0x0F00) >> 8;
@@ -205,8 +197,8 @@ void add_Vx_Vy(Chip8 *chip8) {
 
 /*
 * Opcode 8XY5: SUB Vx, Vy
-* V[X] - V[Y] stored in V[X]
-* If V[X] > V[Y], V[F] register (borrow) is set to 1, else 0 (NOT borrow essentially)
+* V[X]= V[X] - V[Y] stored in
+* If V[X] > V[Y], V[F] register (borrow) en 1,  sino 0
 */
 void sub_Vx_Vy(Chip8 *chip8) {
     uint8_t target_v_reg_x = (chip8->current_op & 0x0F00) >> 8;
@@ -227,7 +219,7 @@ void sub_Vx_Vy(Chip8 *chip8) {
 /*
 * Opcode 8XY6: SHR Vx
 * V[X] = V[X] >> 1
-* If LSb of V[X] == 1, V[F] register is set to 1, else 0
+* if  LSb  V[X] == 1, V[F] = 1, else 0
 */
 void shr(Chip8 *chip8) {
     uint8_t target_v_reg_x = (chip8->current_op & 0x0F00) >> 8;
@@ -244,7 +236,7 @@ void shr(Chip8 *chip8) {
     chip8->pc_reg += 2;
 }
 
-
+//PABLO_PUTO.COM
 /*
 * Opcode 8XY7: SUBN Vx, Vy
 * V[Y] - V[X] stored in V[X]
@@ -332,10 +324,11 @@ void jump_V0(Chip8 *chip8) {
 * Generate Random Num between 0 - 255 then bitwise AND with value KK.
 * Store the result in V[X]
 */
+//TODO:AAAA
 void rnd(Chip8 *chip8) {
     uint8_t target_v_reg = (chip8->current_op & 0x0F00) >> 8;
     uint8_t kk = chip8->current_op & 0x00FF;
-    uint8_t random_num = rand() % 256;
+    uint8_t random_num = mi_rand() % 256;
 
     chip8->V[target_v_reg] = random_num & kk;
     chip8->pc_reg += 2;

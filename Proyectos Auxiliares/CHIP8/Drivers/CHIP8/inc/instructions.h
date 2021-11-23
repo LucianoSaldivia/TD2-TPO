@@ -1,19 +1,16 @@
 #ifndef INSTRUCTIONS_H
 #define INSTRUCTIONS_H
 
-#include <stdlib.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <time.h>
 
+#include <stdio.h>
 #include "chip8_t.h"
 
-// instructions are listed in the order of their opcodes
+
 
 void cls(Chip8 *chip8);                         // 00E0
-void return_from_subroutine(Chip8 *chip8);      // 00EE
+void volver_subroutina(Chip8 *chip8);      			// 00EE
 void jump(Chip8 *chip8);                        // 1NNN
-void call_subroutine(Chip8 *chip8);             // 2NNN
+void call_subroutina(Chip8 *chip8);             // 2NNN
 void se_Vx_kk(Chip8 *chip8);                    // 3XKK
 void sne_Vx_kk(Chip8 *chip8);                   // 4XKK
 void se_Vx_Vy(Chip8 *chip8);                    // 5XY0

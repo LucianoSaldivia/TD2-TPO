@@ -7,10 +7,5 @@ void init_graphics (void){
 	ST7920_GraphicMode(0);
 	ST7920_Clear();
 }
-void graficar(Chip8 *chip8){
-/*
-	FUNCION QUE QUEDO DE LA PRIMERA IMPLEMENTACION
-	*/
-}
 
 
