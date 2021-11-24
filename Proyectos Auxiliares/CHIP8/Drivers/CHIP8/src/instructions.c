@@ -6,9 +6,11 @@ void cls(Chip8 *chip8) {
     for (int i = 0; i < SCREEN_HEIGHT; i++) {
         for (int j = 0; j < SCREEN_WIDTH; j++) {
             chip8->screen[i][j] = 0;
+            ClearPixel(2*(i),2*(j));
         }
     }
-
+    ST7920_Clear();
+    ST7920_Update();
     chip8->pc_reg += 2;
 }
 
@@ -117,7 +119,6 @@ void add_Vx_imm(Chip8 *chip8) {
     uint8_t target_v_reg = (chip8->current_op & 0x0F00) >> 8;
     uint8_t kk = chip8->current_op & 0x00FF;
     
-    // TODO: What if there is overflow?
     chip8->V[target_v_reg] += kk;;
     chip8->pc_reg += 2;
 }
@@ -323,7 +324,7 @@ void jump_V0(Chip8 *chip8) {
 * Random Num between 0 - 255
 * Store the result in V[X]
 */
-//TODO:AAAA
+
 void rnd(Chip8 *chip8) {
     uint8_t target_v_reg = (chip8->current_op & 0x0F00) >> 8;
     uint8_t kk = chip8->current_op & 0x00FF;
@@ -514,7 +515,7 @@ void st_V_regs(Chip8 *chip8) {
         chip8->ram[chip8->I_reg + i] = chip8->V[i];
     }
 
-    // TODO: Does I_reg need to change?
+
     chip8->I_reg += (end_ld_v_reg + 1);
 
     chip8->pc_reg += 2;

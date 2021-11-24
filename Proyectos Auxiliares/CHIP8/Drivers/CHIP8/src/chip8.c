@@ -35,18 +35,6 @@ void load_rom(Chip8 *chip8) {
 
     		if(fno.fname[0] == 0)
     			f_rewinddir(&dp);
-    		//if (pase_por_systick&&(buffKey == NO_KEY)){
-    		/*if (flag){
-    			teclas = Teclado();
-    			flag = 0;
-    		}
-
-    		if (tecla == NO_KEY)
-    			flag = 1;*/
-    		/*	pase_por_systick=0;
-    		}
-    		else
-    			buffKey = NO_KEY;*/
     		tecla = Teclado();
     		if (tecla == NO_KEY)
     			flag = 1;
@@ -101,8 +89,9 @@ void init_system(Chip8 *chip8) {
 
     //PANTALLA
     for (int i = 0; i < SCREEN_HEIGHT; i++) {
-        for (int j = 0; j < SCREEN_WIDTH; j++)
+        for (int j = 0; j < SCREEN_WIDTH; j++){
             chip8->screen[i][j] = 0;
+        }
     }
     //STACK
     for (int i = 0; i < STACK_SIZE; i++)
@@ -290,6 +279,7 @@ void process_user_input(Chip8 *chip8) {
 	DriverTeclado();
 	tecla=Teclado();
 	//Si la tecla presionada coincide con la que tengo en el array le pongo TRUE sino FALSE
+
 	for (int i = 0; i < NUM_KEYS; i++) {
 		if (tecla== KEYMAP[i])
 			chip8->keyboard[i] = TRUE;
