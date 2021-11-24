@@ -14,11 +14,11 @@ uint8_t Teclado( void )
 {
 	uint8_t tecla = NO_KEY;
 
-	if (buffKey != NO_KEY )
-	{
+	//if (buffKey != NO_KEY )
+	//{
 		tecla = buffKey;
-		buffKey = NO_KEY;
-	}
+		//buffKey = NO_KEY;
+	//}
 	return tecla;
 }
 void DriverTeclado(void)
@@ -38,7 +38,7 @@ void TecladoSW (uint8_t codAct){
    { //mientras NO se oprima tecla SIEMPRE
       codAnt = NO_KEY;	//entraré acá
       estado = REPOSO;
-
+      buffKey = NO_KEY;
       return;
    }
 

@@ -36,23 +36,29 @@ void load_rom(Chip8 *chip8) {
     		if(fno.fname[0] == 0)
     			f_rewinddir(&dp);
     		//if (pase_por_systick&&(buffKey == NO_KEY)){
-    		if (flag){
+    		/*if (flag){
     			teclas = Teclado();
     			flag = 0;
     		}
-    		tecla = Teclado();
+
     		if (tecla == NO_KEY)
-    			flag = 1;
+    			flag = 1;*/
     		/*	pase_por_systick=0;
     		}
     		else
     			buffKey = NO_KEY;*/
-
-    		switch(teclas){
+    		tecla = Teclado();
+    		if (tecla == NO_KEY)
+    			flag = 1;
+    		switch(tecla){
 					case 2:
-						ST7920_Clear();
-						f_readdir(&dp, &fno); //Leo el directorio
-						ST7920_SendString(0, 0, fno.fname);
+						if (flag)
+						{
+							flag = 0;
+							ST7920_Clear();
+							f_readdir(&dp, &fno); //Leo el directorio
+							ST7920_SendString(0, 0, fno.fname);
+						}
 
 					break;
 					case 5:
